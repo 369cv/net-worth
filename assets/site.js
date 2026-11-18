@@ -89,3 +89,11 @@ document.querySelectorAll('#links a').forEach(a=>{if(a.getAttribute('href')===(l
 // employers: typed AI reply when visible
 (()=>{const el=document.getElementById('empReply');if(!el)return;const t="Likely yes. At your current savings rate you'd reach about 92% of your target by 60. Raising contributions by 3% closes the gap without changing your spending.";
 new IntersectionObserver((e,o)=>{if(!e[0].isIntersecting)return;o.disconnect();let i=0;(function f(){el.textContent=t.slice(0,i+=2);if(i<t.length)setTimeout(f,22)})()},{threshold:.4}).observe(el)})();
+
+// fan v2: settle flag after entrance, scroll-linked spread only while visible (rAF-throttled)
+(()=>{const fan=document.querySelector('.fan');if(!fan)return;const stage=fan.closest('.stage');
+let vis=false,tick=false;
+const upd=()=>{tick=false;const r=fan.getBoundingClientRect();const c=(r.top+r.height/2)/innerHeight;const v=Math.max(0,Math.min(1,(.75-c)/.6));fan.style.setProperty('--sp',v.toFixed(3))};
+new IntersectionObserver(([e])=>{vis=e.isIntersecting;stage&&stage.classList.toggle('live',vis);if(vis){fan.classList.add('in');setTimeout(()=>fan.classList.add('settled'),1400);upd()}},{threshold:.2}).observe(fan);
+if(!matchMedia('(prefers-reduced-motion: reduce)').matches)addEventListener('scroll',()=>{if(vis&&!tick&&fan.classList.contains('settled')){tick=true;requestAnimationFrame(upd)}},{passive:true});
+})();
