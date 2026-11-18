@@ -1,21 +1,21 @@
 # Net Worth — web app
 
-Next.js 15 · Supabase (auth + Postgres + RLS) · Plaid (sandbox) · Claude advisor. Target: `app.ownyournetworth.app`.
+Next.js 15 · **Wix** backend (member login + CMS collections) · Plaid · Claude advisor. Target: `app.ownyournetworth.app`.
+UI layout references Origin's web app (structure only); brand is Net Worth's own. Live preview: `design/webapp-preview.html`.
 
 ## Components
-| Piece | File | Role |
+| Piece | Files | Role |
 |---|---|---|
-| Auth | `app/login`, `app/auth/*`, `middleware.ts` | Magic-link sign-in; all routes gated |
-| Schema | `supabase/migrations/0001_init.sql` | plaid_items (server-only), accounts, transactions; RLS |
-| Bank link | `components/LinkButton.tsx`, `app/api/plaid/*` | Link token → exchange → sync |
-| Sync | `lib/sync.ts` | Accounts + cursor-based transactions sync |
-| Dashboard | `app/dashboard` | Net worth, assets/liabilities, 30-day spend, transactions |
-| Advisor | `app/advisor`, `app/api/advisor` | Claude chat grounded in the user's own data |
+| Auth | `lib/wix-auth.ts`, `app/auth/*`, `app/login`, `middleware.ts` | Wix-hosted member sign-in/up (OAuth + PKCE), httpOnly session cookie |
+| Database | `lib/wix-data.ts` | Wix Data API with site API key (server-only) |
+| Collections | Wix CMS: `PlaidItems`, `Accounts`, `Transactions`, `Holdings`, `Budgets` | All admin-only; every row has `userId` (Wix member id) |
+| Bank link | `components/LinkButton.tsx`, `app/api/plaid/*`, `lib/sync.ts` | Link → exchange → sync accounts, transactions, holdings |
+| Screens | `app/dashboard`, `spending`, `invest`, `forecast`, `advisor` | Home, Spending, Invest, Forecast, Advisor |
+| Advisor | `app/api/advisor` | Claude, grounded in the member's own rows |
 
-## Setup
-1. Supabase: new project → SQL editor → run `supabase/migrations/0001_init.sql`. Auth → URL config: Site URL `https://app.ownyournetworth.app`, redirect `https://app.ownyournetworth.app/auth/callback` (+ `http://localhost:3000/auth/callback`).
-2. Copy `.env.example` → `.env.local`, fill keys.
-3. `npm install && npm run dev`. Sandbox login in Plaid Link: `user_good` / `pass_good`.
+## Environment
+See `.env.example`. Needed: `WIX_API_KEY` (Wix → API Keys, Wix Data permission), `PLAID_CLIENT_ID`, `PLAID_SECRET`, `ANTHROPIC_API_KEY`.
+Wix login redirect `https://app.ownyournetworth.app/auth/callback` is already allowed on the headless client.
 
-## Deploy (Hostinger Node.js)
-Subdomain `app.ownyournetworth.app` → Node.js app from repo `369cv/net-worth`, root `webapp/`, build `npm run build`, start `npm start`. Set env vars in hPanel, then rebuild.
+## Run / deploy
+`npm install && npm run dev` · Hostinger Node.js app: root `webapp/`, build `npm run build`, start `npm start`.

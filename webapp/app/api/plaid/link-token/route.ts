@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server';
 import { CountryCode, Products } from 'plaid/legacy';
 import { plaid } from '@/lib/plaid';
-import { supabaseServer } from '@/lib/supabase-server';
+import { currentUser } from '@/lib/wix-auth';
 export async function POST() {
-  const { data: { user } } = await (await supabaseServer()).auth.getUser();
+  const user = await currentUser();
   if (!user) return NextResponse.json({ error: 'unauthorized' }, { status: 401 });
   const r = await plaid.linkTokenCreate({
     user: { client_user_id: user.id }, client_name: 'Net Worth', language: 'en',

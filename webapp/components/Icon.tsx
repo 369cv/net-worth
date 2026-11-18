@@ -1,0 +1,4 @@
+const P: Record<string, string> = { home: 'M3 11l9-7 9 7v9H4zM9 20v-6h6v6', spend: 'M3 6h18v12H3zM3 10h18', invest: 'M4 17l5-5 4 3 7-8', forecast: 'M4 19c4-1 6-6 8-9s5-4 8-5M16 5h4v4', equity: 'M5 20V10M12 20V4M19 20v-7', broker: 'M4 18l6-6 4 4 6-6', estate: 'M6 3h9l4 4v14H6zM14 3v5h5', tax: 'M7 3h10v18l-5-3-5 3z', planner: 'M5 4h14v16H5zM9 9h6M9 13h6', spark: 'M12 3l1.8 5.4L19 10l-5.2 1.6L12 17l-1.8-5.4L5 10l5.2-1.6z', link: 'M10 14a4 4 0 006 0l3-3a4 4 0 00-6-6l-1 1M14 10a4 4 0 00-6 0l-3 3a4 4 0 006 6l1-1', bank: 'M3 10l9-6 9 6M5 10v8M10 10v8M14 10v8M19 10v8M3 20h18' };
+export default function Icon({ name, size = 16 }: { name: string; size?: number }) {
+  return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d={P[name]} /></svg>;
+}
