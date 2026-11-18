@@ -107,3 +107,12 @@ document.addEventListener('click',e=>{if(!dd.contains(e.target))set(false)});
 addEventListener('keydown',e=>{if(e.key==='Escape')set(false)});
 dd.querySelectorAll('.ddm a').forEach(a=>{if(a.getAttribute('href')===(location.pathname.split('/').pop()||'index.html'))a.classList.add('cur')});
 })();
+
+// simplify: scroll-driven rotate-up of the phone (0 = isometric, 1 = upright), rAF-throttled, only while visible
+(()=>{const fan=document.getElementById('fan');if(!fan||matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+const stage=fan.closest('.stage'),ph=fan.querySelector('.ph-c'),bars=[...fan.querySelectorAll('.prog i')];let vis=false,tick=false;
+const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+const upd=()=>{tick=false;const r=stage.getBoundingClientRect();const total=r.height-innerHeight*.9;const raw=Math.min(1,Math.max(0,(-r.top+innerHeight*.15)/Math.max(1,total)));
+ const p=ease(raw);ph.style.setProperty('--p',p.toFixed(4));bars.forEach((b,i)=>b.style.setProperty('--f',Math.min(1,Math.max(0,raw*3-i)).toFixed(3)))};
+new IntersectionObserver(([e])=>{vis=e.isIntersecting;if(vis){fan.classList.add('in');upd()}},{rootMargin:'0px 0px -10% 0px'}).observe(stage);
+addEventListener('scroll',()=>{if(vis&&!tick){tick=true;requestAnimationFrame(upd)}},{passive:true});addEventListener('resize',upd);})();

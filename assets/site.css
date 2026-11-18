@@ -1358,3 +1358,20 @@ html,body{overflow-x:clip}
 .award>div,.laurel>div{min-width:170px}
 .award .mono,.laurel .mono{max-width:none;white-space:nowrap}
 .award,.laurel{gap:18px}.award>div,.laurel>div{padding:0 4px}
+/* ===== SIMPLIFY: scroll-driven rotate-up (sticky parallax) ===== */
+section:has(.fan){padding-bottom:0}
+.stage{height:190vh;position:relative}
+.fan{position:sticky;top:max(80px,calc(50vh - 340px));height:680px}
+.fan .ph-c{--p:0;
+  transform:translate3d(0,calc((1 - var(--p))*40px),0) rotateX(calc(52deg*(1 - var(--p)))) rotateZ(calc(-56deg*(1 - var(--p)))) scale(calc(1.05 - var(--p)*.05));
+  transition:opacity .9s cubic-bezier(.16,1,.3,1)!important;will-change:transform}
+.fan:not(.in) .ph-c{opacity:0}
+.fan .ph-c{box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.22),inset 0 0 0 3px #0b0b0c,calc((1 - var(--p))*-26px) calc((1 - var(--p))*30px) 0 -6px #1a1b1e,0 calc(40px + var(--p)*20px) 90px rgba(0,0,0,.55),0 0 calc(var(--p)*120px) rgba(61,123,255,calc(var(--p)*.28))}
+.fan .ph3-body>*{transition-delay:0s!important}
+.fan .ph3-body>*:nth-child(n+3){opacity:calc(.35 + var(--p)*1.3)}
+.fan:before{opacity:calc(.5 + var(--p)*.5)}
+.prog{position:absolute;left:50%;bottom:-36px;transform:translateX(-50%);display:flex;gap:6px}
+.prog i{width:28px;height:3px;border-radius:2px;background:rgba(255,255,255,.15);overflow:hidden;position:relative}
+.prog i:after{content:"";position:absolute;inset:0;background:#fff;transform-origin:left;transform:scaleX(var(--f,0))}
+@media (max-width:900px){.stage{height:150vh}.fan{height:560px;top:90px}.fan .ph-c{transform:translate3d(0,calc((1 - var(--p))*30px),0) rotateX(calc(40deg*(1 - var(--p)))) rotateZ(calc(-30deg*(1 - var(--p)))) scale(.95)}}
+@media (prefers-reduced-motion:reduce){.stage{height:auto}.fan{position:relative;top:0}.fan .ph-c{--p:1}}
