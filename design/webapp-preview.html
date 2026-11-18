@@ -1,0 +1,153 @@
+<title>Net Worth App</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: left rail + working canvas; collapses to top tabs on phones. Brand tokens match the landing site. */
+:root{--bg:#f6f4ef;--panel:#ffffff;--line:#e4e0d6;--ink:#141412;--mute:#6f6b62;--gold:#a8812f;--up:#2f8a57;--down:#c0503d;--chip:#efe9dc;
+--serif:'Instrument Serif',Georgia,serif;--sans:Inter,system-ui,sans-serif;--mono:'JetBrains Mono',ui-monospace,monospace}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b0b0c;--panel:#141416;--line:#26262a;--ink:#f4f1ea;--mute:#9a978f;--gold:#d8b46a;--up:#7fd1a0;--down:#ef8a7a;--chip:#1d1c1a;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0b0b0c;--panel:#141416;--line:#26262a;--ink:#f4f1ea;--mute:#9a978f;--gold:#d8b46a;--up:#7fd1a0;--down:#ef8a7a;--chip:#1d1c1a;color-scheme:dark}
+*{box-sizing:border-box}html,body{height:100%}
+body{background:var(--bg);color:var(--ink);font:15px/1.5 var(--sans)}
+h1,h2,h3{font-family:var(--serif);font-weight:400;margin:0;text-wrap:balance}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.shell{display:grid;grid-template-columns:220px 1fr;min-height:100%}
+.side{border-right:1px solid var(--line);padding:24px 14px;display:flex;flex-direction:column;gap:4px}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--serif);font-size:22px;margin:0 8px 22px}
+.mark{width:26px;height:26px;border-radius:50%;background:conic-gradient(from 200deg,var(--gold),transparent 70%,var(--gold));position:relative}
+.mark::after{content:"";position:absolute;inset:6px;border-radius:50%;background:var(--bg)}
+.nav{all:unset;cursor:pointer;padding:10px 12px;border-radius:10px;color:var(--mute);display:flex;gap:10px;align-items:center}
+.nav:hover,.nav.on{background:var(--panel);color:var(--ink)}
+.nav svg{width:18px;height:18px;flex:none}
+.sb{margin-top:auto;font:12px var(--mono);color:var(--mute);padding:10px 12px;border:1px dashed var(--line);border-radius:10px}
+main{padding-block:32px 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));min-width:0}
+.wrap{max-width:1120px;margin:0 auto;display:grid;gap:16px}
+.head{display:flex;justify-content:space-between;align-items:end;gap:12px;flex-wrap:wrap}
+.label{color:var(--mute);font-size:11px;letter-spacing:.09em;text-transform:uppercase}
+.big{font-family:var(--serif);font-size:clamp(44px,7vw,68px);line-height:1}
+.delta{font:13px var(--mono)}
+.grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.g2{display:grid;gap:16px;grid-template-columns:1.4fr 1fr}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:20px;min-width:0}
+.btn{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 18px;border-radius:999px;border:0;background:var(--ink);color:var(--bg);font-weight:600;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.tw{overflow-x:auto}table{width:100%;border-collapse:collapse}
+td,th{padding:11px 6px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}
+th{color:var(--mute);font-weight:500;font-size:12px}
+.num{text-align:right;font-variant-numeric:tabular-nums;font-family:var(--mono);font-size:13px}
+.up{color:var(--up)}.down{color:var(--down)}.sub{color:var(--mute);font-size:12px}
+.chip{display:inline-block;padding:2px 9px;border-radius:999px;background:var(--chip);font-size:12px;color:var(--mute)}
+.bar{height:8px;background:var(--chip);border-radius:9px;overflow:hidden}.bar i{display:block;height:100%;background:var(--gold);border-radius:9px}
+.bar.over i{background:var(--down)}
+.cat{display:grid;gap:6px}.cat .t{display:flex;justify-content:space-between;font-size:13px}
+svg.chart{width:100%;height:auto;display:block}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:3px}
+.seg button{all:unset;cursor:pointer;padding:6px 12px;border-radius:999px;font-size:12px;color:var(--mute)}
+.seg button.on{background:var(--ink);color:var(--bg)}
+input,textarea{width:100%;min-height:44px;background:var(--bg);border:1px solid var(--line);border-radius:12px;color:var(--ink);padding:10px 14px;font:inherit}
+.center{min-height:100%;display:grid;place-items:center;padding:24px max(16px,env(safe-area-inset-right,0px)) 24px max(16px,env(safe-area-inset-left,0px))}
+.msg{padding:14px 16px;border-radius:14px;max-width:80%;white-space:pre-wrap}
+.msg.u{justify-self:end;background:var(--ink);color:var(--bg)}
+.msg.a{background:var(--panel);border:1px solid var(--line)}
+.chat{display:grid;gap:10px;max-width:760px}
+/* Plaid-style link sheet (simulated sandbox) */
+.ov{position:fixed;inset:0;background:color-mix(in srgb,var(--ink) 45%,transparent);display:grid;place-items:center;z-index:20;padding:16px}
+.sheet{background:var(--panel);border:1px solid var(--line);border-radius:20px;width:min(400px,100%);padding:24px;display:grid;gap:14px}
+.inst{all:unset;cursor:pointer;display:flex;justify-content:space-between;padding:12px 14px;border:1px solid var(--line);border-radius:12px}
+.inst:hover{border-color:var(--gold)}
+.goal{display:grid;gap:8px}
+@media(max-width:820px){.shell{grid-template-columns:1fr}.side{flex-direction:row;overflow-x:auto;border-right:0;border-bottom:1px solid var(--line);padding:10px max(16px,env(safe-area-inset-left,0px));position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);z-index:5}
+.brand,.sb{display:none}.g2{grid-template-columns:1fr}.msg{max-width:92%}}
+@media(prefers-reduced-motion:no-preference){.card{animation:in .35s ease both}@keyframes in{from{transform:translateY(4px)}to{transform:none}}}
+</style>
+
+<div id="app"></div>
+
+<script>
+const $=s=>document.querySelector(s);
+const usd=(n,d=0)=>(n<0?'-':'')+'$'+Math.abs(n).toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});
+const I={home:'<path d="M3 11l9-7 9 7v9a1 1 0 01-1 1h-5v-6h-6v6H4a1 1 0 01-1-1z"/>',spend:'<path d="M4 7h16v12H4zM4 11h16M8 15h3"/>',invest:'<path d="M4 18l5-6 4 3 7-9M15 6h5v5"/>',plan:'<path d="M4 19h16M6 15l4-4 3 3 6-7"/><circle cx="19" cy="7" r="1.5"/>',ask:'<path d="M4 5h16v11H9l-5 4z"/>',link:'<path d="M10 14a4 4 0 006 0l3-3a4 4 0 00-6-6l-1 1M14 10a4 4 0 00-6 0l-3 3a4 4 0 006 6l1-1"/>'};
+const ic=k=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">${I[k]}</svg>`;
+
+/* Sandbox data — mirrors what Plaid sandbox (user_good) returns, shaped like our Supabase tables. */
+const BANKS={chase:{name:'Chase',accts:[{n:'Total Checking',t:'depository',s:'checking',m:'0000',b:8420.17},{n:'Savings',t:'depository',s:'savings',m:'1111',b:24310.55},{n:'Sapphire Preferred',t:'credit',s:'credit card',m:'3333',b:2186.40}]},
+schwab:{name:'Schwab',accts:[{n:'Brokerage',t:'investment',s:'brokerage',m:'5555',b:142880.32},{n:'Roth IRA',t:'investment',s:'ira',m:'6666',b:61240.00}]},
+sofi:{name:'SoFi',accts:[{n:'Student Loan',t:'loan',s:'student',m:'7777',b:18950.00}]}};
+const TX=[['2026-11-17','Whole Foods','FOOD_AND_DRINK',142.18],['2026-11-16','Uber','TRANSPORTATION',23.40],['2026-11-15','Payroll · Acme Inc','INCOME',-4850],['2026-11-14','Blue Bottle','FOOD_AND_DRINK',7.25],['2026-11-13','Con Edison','RENT_AND_UTILITIES',118.62],['2026-11-12','Rent · Avalon','RENT_AND_UTILITIES',2650],['2026-11-11','Equinox','PERSONAL_CARE',245],['2026-11-10','Amazon','GENERAL_MERCHANDISE',89.99],['2026-11-09','Delta','TRAVEL',412.30],['2026-11-08','Sweetgreen','FOOD_AND_DRINK',16.85],['2026-11-07','Spotify','ENTERTAINMENT',11.99],['2026-11-06','Trader Joe’s','FOOD_AND_DRINK',68.40],['2026-11-05','Lyft','TRANSPORTATION',18.20],['2026-11-04','Netflix','ENTERTAINMENT',15.49],['2026-11-03','CVS','MEDICAL',32.10],['2026-11-01','Payroll · Acme Inc','INCOME',-4850]];
+const BUDGET={FOOD_AND_DRINK:600,RENT_AND_UTILITIES:2900,TRANSPORTATION:150,ENTERTAINMENT:80,GENERAL_MERCHANDISE:250,TRAVEL:300,PERSONAL_CARE:250,MEDICAL:100};
+const HOLD=[['VTI','Vanguard Total Market',412,268.40],['VXUS','Vanguard Intl',380,63.10],['AAPL','Apple',120,231.50],['BND','Vanguard Total Bond',300,72.80],['Cash','Sweep',1,4211.12]];
+
+let S={view:'login',linked:[],range:'1Y'};
+try{const v=JSON.parse(localStorage.getItem('nw-preview')||'null');if(v)S={...S,...v}}catch{}
+const save=()=>{try{localStorage.setItem('nw-preview',JSON.stringify({linked:S.linked,view:S.view}))}catch{}};
+const accts=()=>S.linked.flatMap(k=>BANKS[k].accts.map(a=>({...a,bank:BANKS[k].name})));
+const LIAB=new Set(['credit','loan']);
+const totals=()=>{const a=accts();const as=a.filter(x=>!LIAB.has(x.t)).reduce((s,x)=>s+x.b,0),li=a.filter(x=>LIAB.has(x.t)).reduce((s,x)=>s+x.b,0);return{as,li,nw:as-li}};
+const nice=c=>c.replace(/_/g,' ').toLowerCase().replace(/^\w/,m=>m.toUpperCase());
+const spendBy=()=>TX.filter(t=>t[3]>0).reduce((m,t)=>(m[t[2]]=(m[t[2]]||0)+t[3],m),{});
+
+function series(nw,range){const n={'1M':30,'3M':13,'1Y':12,'All':24}[range];let v=nw*({'1M':.97,'3M':.93,'1Y':.78,'All':.52}[range]),out=[];
+ for(let i=0;i<n;i++){const w=Math.sin(i*1.7)*.012*nw;out.push(v+w);v+=(nw-v)/(n-i)}out.push(nw);return out}
+function chart(vals){const W=640,H=200,p=8,mn=Math.min(...vals)*.995,mx=Math.max(...vals)*1.005;
+ const x=i=>p+i*(W-2*p)/(vals.length-1),y=v=>H-p-(v-mn)/(mx-mn)*(H-2*p);
+ const d=vals.map((v,i)=>(i?'L':'M')+x(i).toFixed(1)+' '+y(v).toFixed(1)).join('');
+ const grid=[.25,.5,.75].map(f=>`<line x1="0" x2="${W}" y1="${H*f}" y2="${H*f}" stroke="var(--line)" stroke-dasharray="2 4"/>`).join('');
+ return `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Net worth over time"><defs><linearGradient id="gf" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--gold)" stop-opacity=".28"/><stop offset="1" stop-color="var(--gold)" stop-opacity="0"/></linearGradient></defs>${grid}<path d="${d}L${x(vals.length-1)} ${H}L${p} ${H}Z" fill="url(#gf)"/><path d="${d}" fill="none" stroke="var(--gold)" stroke-width="2"/><circle cx="${x(vals.length-1)}" cy="${y(vals.at(-1))}" r="4.5" fill="var(--gold)"/></svg>`}
+
+function shell(body){const nav=[['dashboard','home','Overview'],['spending','spend','Spending'],['investing','invest','Investing'],['forecast','plan','Forecast'],['advisor','ask','Advisor']];
+ return `<div class="shell"><nav class="side"><div class="brand"><span class="mark"></span>Net Worth</div>${nav.map(([k,i,l])=>`<button class="nav ${S.view===k?'on':''}" data-go="${k}">${ic(i)}${l}</button>`).join('')}
+ <button class="nav" data-act="link">${ic('link')}Link account</button><div class="sb">PLAID · SANDBOX<br>Example data</div></nav><main><div class="wrap">${body}</div></main></div>`}
+
+const empty=()=>`<div class="card" style="max-width:560px"><h1 style="font-size:40px">See your whole picture.</h1><p class="sub" style="font-size:15px">Connect a bank, card or brokerage. In the sandbox, any institution works with <b style="font-family:var(--mono)">user_good</b> / <b style="font-family:var(--mono)">pass_good</b>.</p><button class="btn" data-act="link">Connect an account</button></div>`;
+
+const V={
+login:()=>`<div class="center"><form class="card" id="login" style="width:min(420px,100%);display:grid;gap:14px"><div class="brand" style="margin:0"><span class="mark"></span>Net Worth</div><h1 style="font-size:38px">Welcome to the beta</h1><p class="sub" style="font-size:14px;margin:0">Sign in with a magic link. No password.</p><label for="em" class="label">Email</label><input id="em" type="email" required placeholder="you@email.com"><button class="btn">Email me a link</button><p class="sub" id="lmsg" style="margin:0"></p></form></div>`,
+dashboard:()=>{if(!S.linked.length)return shell(empty());const t=totals(),sp=spendBy(),top=Object.entries(sp).sort((a,b)=>b[1]-a[1]).slice(0,5),tot=top.reduce((s,x)=>s+x[1],0),vals=series(t.nw,S.range),ch=t.nw-vals[0];
+ return shell(`<div class="head"><div><div class="label">Net worth</div><div class="big">${usd(t.nw)}</div><div class="delta ${ch>=0?'up':'down'}">${ch>=0?'+':''}${usd(ch)} · ${S.range}</div></div><div class="row"><button class="btn ghost" data-act="sync">Refresh</button><button class="btn" data-act="link">Add account</button></div></div>
+ <div class="card"><div class="head" style="margin-bottom:8px"><span class="label">Trend</span><div class="seg">${['1M','3M','1Y','All'].map(r=>`<button data-range="${r}" class="${S.range===r?'on':''}">${r}</button>`).join('')}</div></div>${chart(vals)}</div>
+ <div class="grid"><div class="card"><div class="label">Assets</div><h2 style="font-size:32px" class="up">${usd(t.as)}</h2></div><div class="card"><div class="label">Liabilities</div><h2 style="font-size:32px" class="down">${usd(t.li)}</h2></div><div class="card"><div class="label">Spent · 30 days</div><h2 style="font-size:32px">${usd(Object.values(sp).reduce((a,b)=>a+b,0))}</h2></div></div>
+ <div class="g2"><div class="card"><div class="label" style="margin-bottom:6px">Accounts</div><div class="tw"><table><tbody>${accts().map(a=>`<tr><td>${a.n}<div class="sub">${a.bank} · ${a.s} ··${a.m}</div></td><td class="num ${LIAB.has(a.t)?'down':''}">${LIAB.has(a.t)?'-':''}${usd(a.b,2)}</td></tr>`).join('')}</tbody></table></div></div>
+ <div class="card" style="display:grid;gap:12px;align-content:start"><div class="label">Top categories</div>${top.map(([c,v])=>`<div class="cat"><div class="t"><span>${nice(c)}</span><span class="num">${usd(v)}</span></div><div class="bar"><i style="width:${v/tot*100}%"></i></div></div>`).join('')}</div></div>`)},
+spending:()=>{if(!S.linked.length)return shell(empty());const sp=spendBy();
+ return shell(`<div class="head"><div><div class="label">November · budget</div><h1 style="font-size:44px">Spending</h1></div><span class="chip">Income ${usd(9700)}</span></div>
+ <div class="card" style="display:grid;gap:14px">${Object.entries(BUDGET).map(([c,b])=>{const v=sp[c]||0,o=v>b;return`<div class="cat"><div class="t"><span>${nice(c)} ${o?'<span class="chip down">Over</span>':''}</span><span class="num">${usd(v)} / ${usd(b)}</span></div><div class="bar ${o?'over':''}"><i style="width:${Math.min(100,v/b*100)}%"></i></div></div>`}).join('')}</div>
+ <div class="card"><div class="label" style="margin-bottom:6px">Transactions</div><div class="tw"><table><thead><tr><th>Date</th><th>Merchant</th><th>Category</th><th class="num">Amount</th></tr></thead><tbody>${TX.map(t=>`<tr><td class="sub">${t[0].slice(5)}</td><td>${t[1]}</td><td><span class="chip">${nice(t[2])}</span></td><td class="num ${t[3]<0?'up':''}">${t[3]<0?'+':'-'}${usd(Math.abs(t[3]),2)}</td></tr>`).join('')}</tbody></table></div></div>`)},
+investing:()=>{if(!S.linked.includes('schwab'))return shell(`<div class="card" style="max-width:560px"><h1 style="font-size:36px">Connect a brokerage</h1><p class="sub" style="font-size:15px">Link Schwab in the sandbox to see holdings and allocation.</p><button class="btn" data-act="link">Connect</button></div>`);
+ const rows=HOLD.map(h=>({...h,v:h[2]*h[3]})),tot=rows.reduce((s,r)=>s+r.v,0);
+ return shell(`<div class="head"><div><div class="label">Portfolio</div><div class="big">${usd(tot)}</div></div></div>
+ <div class="card"><div class="label" style="margin-bottom:10px">Allocation</div><div style="display:flex;height:14px;border-radius:9px;overflow:hidden;gap:2px">${rows.map((r,i)=>`<i title="${r[0]}" style="width:${r.v/tot*100}%;background:color-mix(in srgb,var(--gold) ${100-i*18}%,var(--chip))"></i>`).join('')}</div></div>
+ <div class="card"><div class="tw"><table><thead><tr><th>Holding</th><th class="num">Qty</th><th class="num">Price</th><th class="num">Value</th><th class="num">Weight</th></tr></thead><tbody>${rows.map(r=>`<tr><td><b>${r[0]}</b><div class="sub">${r[1]}</div></td><td class="num">${r[2]}</td><td class="num">${usd(r[3],2)}</td><td class="num">${usd(r.v)}</td><td class="num">${(r.v/tot*100).toFixed(1)}%</td></tr>`).join('')}</tbody></table></div></div>`)},
+forecast:()=>{if(!S.linked.length)return shell(empty());const nw=totals().nw,save=+(S.save??1800),ret=+(S.ret??6),yrs=20;let v=nw,pts=[nw];for(let y=1;y<=yrs;y++){v=v*(1+ret/100)+save*12;pts.push(v)}
+ return shell(`<div class="head"><div><div class="label">In ${yrs} years</div><div class="big">${usd(v)}</div></div></div>
+ <div class="card">${chart(pts)}</div><div class="grid"><div class="card goal"><label class="label" for="sv">Monthly saving · ${usd(save)}</label><input id="sv" type="range" min="0" max="6000" step="100" value="${save}" style="padding:0"></div><div class="card goal"><label class="label" for="rt">Annual return · ${ret}%</label><input id="rt" type="range" min="0" max="10" step=".5" value="${ret}" style="padding:0"></div></div>`)},
+advisor:()=>shell(`<div><h1 style="font-size:44px">Ask anything.</h1><p class="sub" style="font-size:14px">Answers use your linked accounts. In the live app this calls Claude.</p></div><div class="chat" id="chat">${(S.chat||[]).map(m=>`<div class="msg ${m.r}">${m.c}</div>`).join('')}
+ ${(S.chat||[]).length?'':`<div class="row">${['Where did my money go this month?','Can I afford a $2,000 trip in March?','How fast can I pay off my card?'].map(q=>`<button class="btn ghost" data-q="${q}">${q}</button>`).join('')}</div>`}
+ <form id="ask" class="row" style="flex-wrap:nowrap"><input id="q" placeholder="Ask about your money…" aria-label="Question"><button class="btn">Send</button></form></div>`)
+};
+
+function answer(q){const sp=spendBy(),t=totals();q=q.toLowerCase();
+ if(!S.linked.length)return'Link an account first and I can answer with your real numbers.';
+ if(q.includes('money go')){const top=Object.entries(sp).sort((a,b)=>b[1]-a[1]).slice(0,3);return`This month you spent ${usd(Object.values(sp).reduce((a,b)=>a+b,0))}. Biggest buckets:\n${top.map(([c,v])=>`• ${nice(c)}: ${usd(v)}`).join('\n')}\nTravel is ${usd(sp.TRAVEL||0)} against a ${usd(BUDGET.TRAVEL)} budget, so that's the one running over.`}
+ if(q.includes('trip'))return`Yes. Your checking + savings hold ${usd(32730.72)} and you net about ${usd(9700-4400)} a month after spending. Setting aside ${usd(500)} a month from December covers $2,000 by March without touching savings.`;
+ if(q.includes('card'))return`Your Sapphire balance is ${usd(2186.40,2)}. At ${usd(500)} a month it's gone in 5 months; paying ${usd(1100)} clears it in 2 and saves roughly ${usd(60)} in interest.`;
+ return`Your net worth is ${usd(t.nw)}: ${usd(t.as)} in assets and ${usd(t.li)} in debts. Ask me about spending, a goal, or a payoff plan.`}
+
+function linkSheet(){const o=document.createElement('div');o.className='ov';o.innerHTML=`<div class="sheet" role="dialog" aria-label="Link an account"><div class="label">Plaid · Sandbox</div><h2 style="font-size:28px">Select your institution</h2>${Object.entries(BANKS).map(([k,b])=>`<button class="inst" data-bank="${k}" ${S.linked.includes(k)?'disabled style="opacity:.45"':''}><span>${b.name}</span><span class="sub">${S.linked.includes(k)?'Linked':b.accts.length+' accounts'}</span></button>`).join('')}<button class="btn ghost" data-close>Cancel</button></div>`;
+ document.body.append(o);o.addEventListener('click',e=>{if(e.target===o||e.target.closest('[data-close]'))return o.remove();const b=e.target.closest('[data-bank]');if(!b||b.disabled)return;
+  o.querySelector('.sheet').innerHTML=`<div class="label">Plaid · Sandbox</div><h2 style="font-size:28px">${BANKS[b.dataset.bank].name}</h2><label class="label" for="pu">Username</label><input id="pu" value="user_good"><label class="label" for="pp">Password</label><input id="pp" type="password" value="pass_good"><button class="btn" id="pgo">Continue</button>`;
+  o.querySelector('#pgo').onclick=ev=>{ev.target.textContent='Connecting…';setTimeout(()=>{S.linked.push(b.dataset.bank);o.remove();save();render()},700)}})}
+
+function render(){const v=V[S.view]?S.view:'dashboard';$('#app').innerHTML=V[v]();if(location.hash.slice(1)!==v&&v!=='login')history.replaceState(null,'','#'+v)}
+document.addEventListener('click',e=>{const g=e.target.closest('[data-go]');if(g){S.view=g.dataset.go;save();return render()}
+ const a=e.target.closest('[data-act]');if(a){if(a.dataset.act==='link')return linkSheet();if(a.dataset.act==='sync'){a.textContent='Syncing…';return setTimeout(render,600)}}
+ const r=e.target.closest('[data-range]');if(r){S.range=r.dataset.range;return render()}
+ const q=e.target.closest('[data-q]');if(q){$('#q').value=q.dataset.q;$('#ask').requestSubmit()}});
+document.addEventListener('submit',e=>{e.preventDefault();if(e.target.id==='login'){$('#lmsg').textContent='Link sent. Opening your dashboard…';setTimeout(()=>{S.view='dashboard';save();render()},700)}
+ if(e.target.id==='ask'){const q=$('#q').value.trim();if(!q)return;S.chat=[...(S.chat||[]),{r:'u',c:q},{r:'a',c:answer(q)}];render();$('#q').focus()}});
+document.addEventListener('input',e=>{if(e.target.id==='sv'){S.save=e.target.value;render();$('#sv').focus()}if(e.target.id==='rt'){S.ret=e.target.value;render();$('#rt').focus()}});
+addEventListener('hashchange',()=>{const h=location.hash.slice(1);if(V[h]){S.view=h;render()}});
+{const h=location.hash.slice(1);if(V[h])S.view=h}
+render();
+</script>
