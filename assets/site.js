@@ -53,7 +53,7 @@ addEventListener('scroll',()=>{const y=scrollY;if(y>innerHeight)return;
 hero.addEventListener('pointermove',e=>{const x=(e.clientX/innerWidth-.5),y=(e.clientY/innerHeight-.5);
   glow.style.translate=`${x*60}px ${y*40}px`});
 // hero v2: rotating example questions in the ask bar
-const qi=hero.querySelector('.ask input'),qs=['Ask any money question…','Can I afford a $600k home?','How much should I save for retirement?','Where did my money go last month?'];let qn=0;
+const qi=hero.querySelector('.ask input'),qs=['Where am I overspending this month?','Can I afford a $600k home?','How much should I save for retirement?','Am I on track to retire at 60?'];let qn=0;
 setInterval(()=>{if(document.activeElement===qi)return;qi.style.opacity=0;setTimeout(()=>{qi.placeholder=qs[++qn%qs.length];qi.style.opacity=1},300)},3200);}
 
 // ===== WAITLIST =====
@@ -96,4 +96,14 @@ let vis=false,tick=false;
 const upd=()=>{tick=false;const r=fan.getBoundingClientRect();const c=(r.top+r.height/2)/innerHeight;const v=Math.max(0,Math.min(1,(.75-c)/.6));fan.style.setProperty('--sp',v.toFixed(3))};
 new IntersectionObserver(([e])=>{vis=e.isIntersecting;stage&&stage.classList.toggle('live',vis);if(vis){fan.classList.add('in');setTimeout(()=>fan.classList.add('settled'),1400);upd()}},{threshold:.2}).observe(fan);
 if(!matchMedia('(prefers-reduced-motion: reduce)').matches)addEventListener('scroll',()=>{if(vis&&!tick&&fan.classList.contains('settled')){tick=true;requestAnimationFrame(upd)}},{passive:true});
+})();
+
+// nav v2: products dropdown (click/keyboard, closes on outside click / Escape)
+(()=>{const dd=document.querySelector('.dd');if(!dd)return;const b=dd.querySelector('.nb');
+const set=o=>{dd.classList.toggle('open',o);b.setAttribute('aria-expanded',o)};
+b.addEventListener('click',e=>{e.stopPropagation();set(!dd.classList.contains('open'))});
+if(matchMedia('(hover:hover)').matches){dd.addEventListener('mouseenter',()=>set(true));dd.addEventListener('mouseleave',()=>set(false))}
+document.addEventListener('click',e=>{if(!dd.contains(e.target))set(false)});
+addEventListener('keydown',e=>{if(e.key==='Escape')set(false)});
+dd.querySelectorAll('.ddm a').forEach(a=>{if(a.getAttribute('href')===(location.pathname.split('/').pop()||'index.html'))a.classList.add('cur')});
 })();
