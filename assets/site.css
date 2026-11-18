@@ -1206,3 +1206,38 @@ main{display:block}
 .tm2 .li{margin-top:auto;width:36px;height:36px;border-radius:50%;background:#2a2b2f;display:grid;place-items:center;font-weight:700;font-size:12px}
 .tm2.hire{border:1px dashed rgba(255,255,255,.18);background:transparent}
 @media (max-width:900px){.team2{grid-template-columns:1fr}}
+
+/* ===== POLISH PASS: logo, icons, spacing, performance ===== */
+.logo{display:flex;align-items:center;gap:10px;font-family:"Instrument Serif",serif;font-weight:400;font-size:24px;letter-spacing:-.01em}
+.logo .mark{width:26px;height:26px;color:#fff;transition:transform .5s cubic-bezier(.3,1.5,.5,1)}
+.logo:hover .mark{transform:rotate(-8deg) scale(1.06)}
+.ft-logo .mark{width:34px;height:34px}
+.lgo{display:inline-grid;width:auto;height:auto;background:none!important;vertical-align:middle}.lgo .mark{width:22px;height:22px}
+.ic{width:1em;height:1em;display:inline-block;vertical-align:-.14em;flex-shrink:0}
+.ic.flip{transform:rotate(180deg)}
+.tabbar span i .ic{width:15px;height:15px}
+.cat i .ic,.dot .ic{width:12px;height:12px}
+.brow .ic .ic,.brow .ic svg{width:14px;height:14px}
+.ph-tools i .ic{width:15px;height:15px}
+.ri{display:grid;place-items:center;width:30px;height:30px;border-radius:8px;background:rgba(255,255,255,.08)}.ri .ic{width:16px;height:16px}
+.tags span{display:inline-flex;align-items:center;gap:6px}
+.soc a .ic{width:20px;height:20px}
+.sbtn .ic,.store .ic{width:16px;height:16px}
+.li .ic{width:16px;height:16px}
+.pin .ic{width:18px;height:18px}
+.avpill i .ic{width:24px;height:24px}
+.spark .ic{width:26px;height:26px}.spk .ic{width:18px;height:18px}.sp .ic{width:15px;height:15px}
+.fb span{display:inline-flex;align-items:center;gap:5px}.fb .ic{width:11px;height:11px}
+.burger .ic{width:24px;height:24px}
+.chat2 .follow i .ic,.prompt b .ic{width:13px;height:13px}
+.ph3-top .ic{width:16px;height:16px}
+.trust span{display:inline-flex;align-items:center;gap:6px}
+/* spacing rhythm */
+section{padding:clamp(96px,11vw,150px) 0}
+section.tight{padding-top:clamp(40px,5vw,72px)}
+.head{margin-bottom:clamp(40px,5vw,64px)}
+.g2,.g3,.g4{gap:20px}
+/* performance: skip rendering offscreen sections */
+main>section,body>section{content-visibility:auto;contain-intrinsic-size:auto 900px}
+.reveal{will-change:auto}
+@media (prefers-reduced-motion:reduce){.logo:hover .mark{transform:none}}

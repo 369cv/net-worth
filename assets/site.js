@@ -1,7 +1,7 @@
 // nav state + mobile menu
 const nav=document.getElementById('nav');
 addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>40),{passive:true});
-document.getElementById('burger').onclick=()=>document.getElementById('links').classList.toggle('open');
+document.getElementById('burger').onclick=e=>{const o=document.getElementById('links').classList.toggle('open');e.currentTarget.setAttribute('aria-expanded',o)};
 document.querySelectorAll('#links a').forEach(a=>a.onclick=()=>document.getElementById('links').classList.remove('open'));
 
 // reveal + count-up
@@ -21,7 +21,7 @@ function count(el){
 }
 
 // chart line draw-on: tag every stroked path
-document.querySelectorAll('svg path[fill="none"]:not(.nodraw)').forEach(p=>{
+document.querySelectorAll('svg path[fill="none"]:not(.nodraw)').forEach(p=>{if(p.closest('symbol,.mark,.ic'))return;
   const L=Math.ceil(p.getTotalLength());p.style.setProperty('--len',L);p.classList.add('draw');
 });
 // standalone observers for phone + typing
