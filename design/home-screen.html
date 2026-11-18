@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Home Screen Design</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#08090b;--card:#121317;--card2:#17181d;--line:#1f2026;--text:#f2f2f0;--muted:#8d8e96;--violet:#8d7cff;--blue:#5b95ff;--green:#3fcf8e;--red:#f06a6a;--amber:#f5a65b}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#1a1b1f;color:var(--text);font:14px/1.4 Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh;display:grid;place-items:center;padding:24px 16px}
+.mono{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.serif{font-family:"Instrument Serif",serif;font-weight:400}
+.screen{width:390px;height:844px;background:var(--bg);border-radius:48px;overflow:hidden;position:relative;display:flex;flex-direction:column;box-shadow:0 30px 80px rgba(0,0,0,.5)}
+.sb{display:flex;justify-content:space-between;align-items:center;padding:16px 30px 0;height:50px;font-weight:600;font-size:15px}
+.sb .isl{position:absolute;left:50%;top:11px;width:122px;height:36px;margin-left:-61px;background:#000;border-radius:20px}
+.sb .r{display:flex;gap:6px;align-items:center}.sb svg{height:12px;fill:currentColor}
+.top{display:flex;justify-content:space-between;align-items:center;padding:14px 22px 6px}
+.hello .mono{display:block;margin-bottom:2px}.hello h1{font-size:30px;line-height:1}
+.hello h1 em{font-style:italic}
+.icons{display:flex;gap:8px}.ib{width:38px;height:38px;border-radius:50%;background:var(--card);display:grid;place-items:center;position:relative}
+.ib svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.ib .dot{position:absolute;top:8px;right:9px;width:7px;height:7px;border-radius:50%;background:var(--violet);box-shadow:0 0 0 2px var(--card)}
+.body{flex:1;overflow:hidden;padding:8px 16px 0;display:flex;flex-direction:column;gap:10px}
+.hero{padding:16px 16px 12px;border-radius:24px;background:radial-gradient(120% 90% at 85% 0%,rgba(91,149,255,.22),transparent 60%),linear-gradient(180deg,#111319,#0d0e12);border:1px solid var(--line)}
+.hero-h{display:flex;justify-content:space-between;align-items:center}
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:11px;padding:5px 10px;border-radius:999px;background:rgba(255,255,255,.06);color:#d6d6dc}
+.big{font-size:40px;font-weight:500;letter-spacing:-.02em;margin-top:8px}
+.big span{color:var(--muted);font-size:26px}
+.chg{display:flex;gap:8px;align-items:center;font-size:12.5px;color:var(--muted)}.chg b{color:var(--green);font-weight:600}
+.chart{margin:10px -16px 0;height:110px}
+.ranges{display:flex;justify-content:space-between;padding:4px 2px 0}
+.ranges span{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--muted);padding:5px 10px;border-radius:8px}
+.ranges .on{background:#fff;color:#0b0b0d;font-weight:600}
+.ai{display:flex;gap:12px;align-items:flex-start;padding:13px 14px;border-radius:20px;background:linear-gradient(120deg,rgba(141,124,255,.16),rgba(141,124,255,.04));border:1px solid rgba(141,124,255,.35)}
+.ai .orb{width:34px;height:34px;flex-shrink:0;border-radius:11px;background:conic-gradient(from 200deg,#8d7cff,#5b95ff,#3fcf8e,#8d7cff);display:grid;place-items:center}
+.ai .orb svg{width:16px;height:16px;fill:#fff}
+.ai p{font-size:13px;line-height:1.45;color:#e6e4f5}.ai p b{color:#fff}
+.ai .act{display:inline-block;margin-top:8px;font-size:11.5px;color:var(--violet);font-weight:600}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tile{padding:13px 14px;border-radius:18px;background:var(--card);border:1px solid var(--line)}
+.tile .row{display:flex;justify-content:space-between;align-items:center}
+.tile .sq{width:26px;height:26px;border-radius:8px;display:grid;place-items:center}
+.tile .sq svg{width:14px;height:14px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.tile .v{font-size:19px;font-weight:500;margin-top:10px;letter-spacing:-.01em}
+.tile .s{font-size:11px;color:var(--muted);margin-top:1px}
+.tile .s b{font-weight:600}
+.spark{height:22px;width:60px}
+.bills{padding:12px 14px;border-radius:18px;background:var(--card);border:1px solid var(--line)}
+.bills .hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.bill{display:flex;align-items:center;gap:10px;padding:6px 0}
+.bill .lg{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;font-weight:700;font-size:12px}
+.bill .n{flex:1}.bill .n b{display:block;font-weight:500;font-size:13px}.bill .n span{font-size:11px;color:var(--muted)}
+.bill .a{font-weight:500;font-size:13px}
+.tab{display:flex;align-items:center;justify-content:space-around;padding:10px 18px 28px;background:linear-gradient(180deg,rgba(8,9,11,0),var(--bg) 30%);position:relative}
+.tab a{display:flex;flex-direction:column;align-items:center;gap:4px;color:#6f7078;font-size:10px;text-decoration:none}
+.tab a.on{color:#fff}
+.tab svg{width:21px;height:21px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.tab .ask{width:54px;height:54px;border-radius:18px;margin-top:-26px;background:conic-gradient(from 210deg,#8d7cff,#5b95ff,#3fcf8e,#8d7cff);display:grid;place-items:center;box-shadow:0 10px 30px rgba(141,124,255,.45)}
+.tab .ask svg{fill:#fff;stroke:none;width:22px;height:22px}
+.home-ind{position:absolute;bottom:8px;left:50%;width:134px;height:5px;margin-left:-67px;border-radius:3px;background:#fff;opacity:.9}
+.note{position:fixed;left:16px;bottom:16px;font-size:12px;color:#8d8e96;max-width:320px}
+</style>
+</head>
+<body>
+<div class="screen" id="screen">
+  <div class="sb"><span>9:41</span><i class="isl"></i>
+    <span class="r"><svg viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg><svg viewBox="0 0 16 12"><path d="M8 11.5 5.6 9a3.4 3.4 0 0 1 4.8 0zM3.4 6.8a6.6 6.6 0 0 1 9.2 0l-1.4 1.4a4.6 4.6 0 0 0-6.4 0zM1 4.4a10 10 0 0 1 14 0l-1.4 1.4a8 8 0 0 0-11.2 0z"/></svg><svg viewBox="0 0 26 12"><rect x=".5" y=".5" width="22" height="11" rx="3.2" fill="none" stroke="currentColor" opacity=".45"/><rect x="2.5" y="2.5" width="16" height="7" rx="1.6"/><path d="M24 4v4a2 2 0 0 0 0-4z" opacity=".45"/></svg></span>
+  </div>
+
+  <div class="top">
+    <div class="hello"><span class="mono">Tuesday, Nov 18</span><h1 class="serif"><em>Morning,</em> Alex</h1></div>
+    <div class="icons">
+      <span class="ib"><svg viewBox="0 0 24 24"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.9 1.9 0 0 0 3.4 0"/></svg><i class="dot"></i></span>
+      <span class="ib" style="background:linear-gradient(135deg,#f4c27a,#c96b3d);font-weight:600;font-size:13px">AR</span>
+    </div>
+  </div>
+
+  <div class="body">
+    <section class="hero">
+      <div class="hero-h"><span class="mono">Net worth</span><span class="pill">12 accounts · synced now</span></div>
+      <div class="big">$248,310<span>.42</span></div>
+      <div class="chg"><b>▲ $4,120 (1.7%)</b> this month</div>
+      <svg class="chart" viewBox="0 0 358 110" preserveAspectRatio="none">
+        <defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5b95ff" stop-opacity=".45"/><stop offset="1" stop-color="#5b95ff" stop-opacity="0"/></linearGradient></defs>
+        <g stroke="rgba(255,255,255,.06)" stroke-dasharray="2 5"><line x1="0" y1="30" x2="358" y2="30"/><line x1="0" y1="62" x2="358" y2="62"/><line x1="0" y1="94" x2="358" y2="94"/></g>
+        <path d="M0 92 C20 88 30 94 46 86 S72 76 90 80 S118 70 134 66 S160 72 176 60 S204 50 220 54 S248 40 266 38 S296 30 312 24 S340 14 358 10 L358 110 L0 110Z" fill="url(#g)"/>
+        <path d="M0 92 C20 88 30 94 46 86 S72 76 90 80 S118 70 134 66 S160 72 176 60 S204 50 220 54 S248 40 266 38 S296 30 312 24 S340 14 358 10" fill="none" stroke="#7aa9ff" stroke-width="2.2"/>
+        <circle cx="350" cy="11.5" r="9" fill="#5b95ff" opacity=".25"/><circle cx="350" cy="11.5" r="4" fill="#fff"/>
+      </svg>
+      <div class="ranges"><span>1W</span><span class="on">1M</span><span>3M</span><span>YTD</span><span>1Y</span><span>ALL</span></div>
+    </section>
+
+    <section class="ai">
+      <span class="orb"><svg viewBox="0 0 24 24"><path d="M12 2c.7 5 3.6 8 10 10-6.4 2-9.3 5-10 10-.7-5-3.6-8-10-10 6.4-2 9.3-5 10-10z"/></svg></span>
+      <div><p>You're on pace to save <b>$640 more</b> than last month. Moving $2,000 of idle cash could earn about <b>$85/yr</b>.</p><span class="act">Ask your advisor →</span></div>
+    </section>
+
+    <div class="grid">
+      <div class="tile"><div class="row"><span class="sq" style="background:#2b5bd6"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18"/></svg></span><svg class="spark" viewBox="0 0 60 22"><path d="M0 16 L10 14 L20 15 L30 10 L40 11 L50 6 L60 4" fill="none" stroke="#7aa9ff" stroke-width="1.6"/></svg></div><div class="v">$32,480</div><div class="s">Cash · <b style="color:var(--green)">+2.1%</b></div></div>
+      <div class="tile"><div class="row"><span class="sq" style="background:#2a9a6a"><svg viewBox="0 0 24 24"><path d="m3 17 6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg></span><svg class="spark" viewBox="0 0 60 22"><path d="M0 18 L10 15 L20 16 L30 9 L40 12 L50 5 L60 3" fill="none" stroke="#3fcf8e" stroke-width="1.6"/></svg></div><div class="v">$171,920</div><div class="s">Investing · <b style="color:var(--green)">+3.9%</b></div></div>
+      <div class="tile"><div class="row"><span class="sq" style="background:#b2702e"><svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/></svg></span><svg class="spark" viewBox="0 0 60 22"><path d="M0 12 L20 11 L40 10 L60 9" fill="none" stroke="#f5a65b" stroke-width="1.6"/></svg></div><div class="v">$96,000</div><div class="s">Property · <b style="color:var(--muted)">est.</b></div></div>
+      <div class="tile"><div class="row"><span class="sq" style="background:#a63a4f"><svg viewBox="0 0 24 24"><path d="M12 3v18M5 14l7 7 7-7"/></svg></span><svg class="spark" viewBox="0 0 60 22"><path d="M0 4 L15 7 L30 9 L45 13 L60 16" fill="none" stroke="#f06a6a" stroke-width="1.6"/></svg></div><div class="v">−$52,090</div><div class="s">Debt · <b style="color:var(--green)">−$1,240</b></div></div>
+    </div>
+
+    <section class="bills">
+      <div class="hd"><span class="mono">Upcoming · 7 days</span><span style="font-size:12px;color:var(--muted)">$2,197</span></div>
+      <div class="bill"><span class="lg" style="background:#1f3b63;color:#9cc4ff">R</span><div class="n"><b>Rent</b><span>Tomorrow</span></div><span class="a">$2,100.00</span></div>
+      <div class="bill"><span class="lg" style="background:#2a1f3d;color:#c4b5ff">S</span><div class="n"><b>Streaming</b><span>Fri, Nov 21</span></div><span class="a">$15.99</span></div>
+    </section>
+  </div>
+
+  <nav class="tab">
+    <a class="on" href="#"><svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg>Home</a>
+    <a href="#"><svg viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="M2.5 10h19"/></svg>Spend</a>
+    <span class="ask"><svg viewBox="0 0 24 24"><path d="M12 2c.7 5 3.6 8 10 10-6.4 2-9.3 5-10 10-.7-5-3.6-8-10-10 6.4-2 9.3-5 10-10z"/></svg></span>
+    <a href="#"><svg viewBox="0 0 24 24"><path d="m3 17 6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg>Invest</a>
+    <a href="#"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 15l3-4 3 2 5-7"/></svg>Plan</a>
+    <i class="home-ind"></i>
+  </nav>
+</div>
+</body>
+</html>
