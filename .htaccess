@@ -1,6 +1,6 @@
 ErrorDocument 404 /404.html
 Options -Indexes
-RedirectMatch 404 ^/(api|design|\.git)(/.*)?$
+RedirectMatch 404 ^/(api|design|webapp|\.git)(/.*)?$
 RedirectMatch 404 ^/(README\.md|package\.json|vercel\.json|\.gitignore)$
 RewriteEngine On
 RewriteCond %{HTTPS} off
