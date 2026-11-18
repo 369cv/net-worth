@@ -27,7 +27,12 @@ document.querySelectorAll('svg path[fill="none"]:not(.nodraw)').forEach(p=>{if(p
 // standalone observers for phone + typing
 const once=(el,fn)=>{if(!el)return;const o=new IntersectionObserver(([e])=>{if(e.isIntersecting){fn(el);o.disconnect()}},{threshold:.3});o.observe(el)};
 once(document.getElementById('dlPhone'),el=>el.classList.add('in'));
-once(document.getElementById('typed'),el=>{const s=el.dataset.text;let i=0;(function t(){el.textContent=s.slice(0,++i);if(i<s.length)setTimeout(t,45)})()});
+// ask-anything sequence: type question -> send -> thinking -> answer + chart
+(()=>{const el=document.getElementById('typed');if(!el)return;const card=el.closest('.chat');card.classList.add('seq');
+const rm=matchMedia('(prefers-reduced-motion: reduce)').matches;
+once(card,()=>{const s=el.dataset.text;if(rm){el.textContent=s;card.classList.add('sent','answered');return}let i=0;
+ (function t(){el.textContent=s.slice(0,++i);if(i<s.length)return setTimeout(t,38+Math.random()*40);
+  setTimeout(()=>{card.classList.add('sent');setTimeout(()=>card.classList.add('answered'),1700)},450)})()})})();
 // hero phone untilts as it scrolls into center
 const hp=document.getElementById('heroPhone');
 if(hp)addEventListener('scroll',()=>{const r=hp.getBoundingClientRect(),c=(r.top+r.height/2)/innerHeight;hp.style.setProperty('--t',Math.max(0,Math.min(1,(c-.35)/.6)).toFixed(3))},{passive:true});

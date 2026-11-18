@@ -1375,3 +1375,24 @@ section:has(.fan){padding-bottom:0}
 .prog i:after{content:"";position:absolute;inset:0;background:#fff;transform-origin:left;transform:scaleX(var(--f,0))}
 @media (max-width:900px){.stage{height:150vh}.fan{height:560px;top:90px}.fan .ph-c{transform:translate3d(0,calc((1 - var(--p))*30px),0) rotateX(calc(40deg*(1 - var(--p)))) rotateZ(calc(-30deg*(1 - var(--p)))) scale(.95)}}
 @media (prefers-reduced-motion:reduce){.stage{height:auto}.fan{position:relative;top:0}.fan .ph-c{--p:1}}
+
+/* ===== ASK ANYTHING: typed -> thinking -> answer ===== */
+.chat.seq .answer,.chat.seq>.ui{opacity:0;transform:translateY(14px);max-height:0;overflow:hidden;margin:0!important;transition:opacity .6s ease,transform .7s cubic-bezier(.16,1,.3,1),max-height .8s cubic-bezier(.16,1,.3,1)}
+.chat.seq.answered .answer{opacity:1;transform:none;max-height:260px}
+.chat.seq.answered>.ui{opacity:1;transform:none;max-height:200px;margin-top:12px!important;transition-delay:.25s}
+.chat.seq .answer li{opacity:0;transform:translateX(-6px);transition:.5s ease}
+.chat.seq.answered .answer li{opacity:1;transform:none}
+.chat.seq.answered .answer li:nth-child(1){transition-delay:.35s}.chat.seq.answered .answer li:nth-child(2){transition-delay:.5s}.chat.seq.answered .answer li:nth-child(3){transition-delay:.65s}
+.chat.seq>.ui path{stroke-dashoffset:var(--len,1000)!important;transition:stroke-dashoffset 1.6s cubic-bezier(.4,0,.2,1) .5s!important}
+.chat.seq.answered>.ui path{stroke-dashoffset:0!important}
+.chat.seq>.ui path[fill^="url"]{opacity:0;transition:opacity 1s .9s!important}.chat.seq.answered>.ui path[fill^="url"]{opacity:1}
+.prompt b{transition:transform .25s,background .25s}
+.chat.sent .prompt b{transform:scale(.88);background:#7b6cf6;color:#fff}
+.chat.sent .caret{display:none}
+.thinking{display:flex;align-items:center;gap:8px;height:0;opacity:0;overflow:hidden;padding:0 6px;color:#a9a3ff;font-size:13px;transition:height .4s ease,opacity .3s ease,padding .4s}
+.thinking .ic{width:15px;height:15px;animation:spin 2.4s linear infinite}
+.thinking span{background:linear-gradient(90deg,#8a84d8 0%,#fff 50%,#8a84d8 100%);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shim 1.4s linear infinite}
+.thinking i{width:4px;height:4px;border-radius:50%;background:#a9a3ff;animation:bob 1s ease-in-out infinite}.thinking i:nth-of-type(2){animation-delay:.15s}.thinking i:nth-of-type(3){animation-delay:.3s}
+@keyframes shim{to{background-position:-200% 0}}@keyframes bob{50%{transform:translateY(-4px);opacity:.4}}
+.chat.sent:not(.answered) .thinking{height:40px;opacity:1;padding-top:14px}
+@media (prefers-reduced-motion:reduce){.chat.seq .answer,.chat.seq>.ui,.chat.seq .answer li{opacity:1;transform:none;max-height:none}.thinking{display:none}}
