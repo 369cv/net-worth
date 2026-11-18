@@ -1128,3 +1128,22 @@ main{display:block}
 .tm h4{font-size:20px;font-weight:500}.tm .mono{font-size:11px;color:#9a9aa0;display:block;margin:6px 0 12px}
 @media (max-width:900px){.feat{grid-template-columns:1fr;padding:40px 24px}.rcard{min-height:340px;padding:36px 28px}.ghost{font-size:20px}}
 @media (max-width:900px){.shot{padding:16px}.evals{gap:6px;padding:10px;height:170px}.evals div{font-size:8.5px;min-width:0}.feat{overflow:hidden}}
+
+/* ===== GENERATED PHOTOS (assets/img) ===== */
+.tc-dune{background:linear-gradient(180deg,rgba(0,0,0,.05),rgba(0,0,0,.15)),url(img/dune.jpg) center/cover}
+.tc-sand{background:linear-gradient(180deg,rgba(0,0,0,.1),rgba(0,0,0,.2)),url(img/sand.jpg) center/cover}
+.tc-sea{background:linear-gradient(180deg,rgba(0,0,0,.05),rgba(0,0,0,.2)),url(img/sea.jpg) center/cover}
+.ph-forest{background:linear-gradient(180deg,rgba(0,0,0,.15),rgba(0,0,0,.25)),url(img/forest.jpg) center/cover}
+.ph-leaf{background:linear-gradient(180deg,rgba(0,0,0,.1),rgba(0,0,0,.25)),url(img/leaf.jpg) center/cover}
+.ph-palm{background:linear-gradient(180deg,rgba(0,0,0,.1),rgba(0,0,0,.25)),url(img/palm.jpg) center/cover}
+.meadow{background:linear-gradient(180deg,rgba(0,0,0,.15),rgba(0,0,0,.35)),url(img/meadow.jpg) center/cover;filter:none}
+.forest{background:url(img/forest-wide.jpg) center/cover}
+.mo-baby{background:url(img/mo-family.jpg) center/cover}
+.mo-home{background:url(img/mo-home.jpg) center/cover}
+.mo-wed{background:url(img/mo-wedding.jpg) center/cover}
+.mo-retire{background:url(img/mo-retire.jpg) center/cover}
+.mo-biz{background:url(img/mo-business.jpg) center/cover}
+.mo-travel{background:url(img/mo-sabbatical.jpg) center/cover}
+.mo-wind{background:url(img/mo-windfall.jpg) center/cover}
+.mo:after{inset:0;height:auto;background:radial-gradient(ellipse 60% 45% at 50% 50%,rgba(0,0,0,.38),transparent 75%),linear-gradient(transparent 45%,rgba(10,10,12,.7))}
+.mo span{font-size:21px;text-shadow:0 2px 18px rgba(0,0,0,.7)}
