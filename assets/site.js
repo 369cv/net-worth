@@ -66,7 +66,7 @@ const wl=document.getElementById('wl'),wf=document.getElementById('wlForm'),wd=d
 const qp=new URLSearchParams(location.search);const REF=qp.get('ref')||'';const UTM=Object.fromEntries([...qp].filter(([k])=>k.startsWith('utm_')));
 let ctx={source:'unknown',question:''};
 function openWL(source,role,email,question){ctx={source,question:question||''};wf.hidden=false;wd.hidden=true;we.textContent='';
-  if(role)wf.role.value=role;if(email)wf.email.value=email;wl.classList.add('open');setTimeout(()=>wf.email.focus(),200)}
+  wf.role.value=role||'individual';if(email)wf.email.value=email;setKind();wl.classList.add('open');setTimeout(()=>wf.email.focus(),200)}
 function closeWL(){wl.classList.remove('open')}
 document.addEventListener('click',e=>{const t=e.target.closest('[data-waitlist]');if(t){e.preventDefault();openWL(t.dataset.waitlist,t.dataset.role);if(t.dataset.platform)wf.platform.value=t.dataset.platform}
   if(e.target===wl||e.target.closest('[data-close]'))closeWL()});
@@ -74,14 +74,25 @@ addEventListener('keydown',e=>{if(e.key==='Escape')closeWL()});
 document.getElementById('heroAsk')?.addEventListener('submit',e=>{e.preventDefault();openWL('hero-ask',null,'',e.target.querySelector('input').value)});
 document.querySelectorAll('.inline-wl').forEach(f=>f.addEventListener('submit',e=>{e.preventDefault();openWL(f.dataset.source,null,f.email.value)}));
 // Wix Forms backend (Waitlist form). Falls back to /api/waitlist (Vercel) if Wix is unreachable.
-const WIX={clientId:'93d68ff8-1a94-4b42-a760-c0ea27b7bac5',formId:'1d9929b8-d1e7-48e4-9672-7997bfec89ca'};
+const WIX={clientId:'93d68ff8-1a94-4b42-a760-c0ea27b7bac5',forms:{waitlist:'1d9929b8-d1e7-48e4-9672-7997bfec89ca',investor:'0c6e759b-583e-4251-9593-95576abc4666',employer:'f48bc911-d749-42e2-92d4-1ff892dbb100'}};
+const KIND={investor:{t:'<em>Investor</em> inquiry',sub:"Tell us about you and we'll send the deck and set up a founder call.",btn:'Request the deck',sl:'Check size',opts:['Under $50k','$50k-$250k','$250k-$1M','$1M+','Fund / institutional']},
+employer:{t:'<em>Book</em> a demo',sub:'Tell us about your team and we\'ll set up a pilot walkthrough.',btn:'Book a demo',sl:'Team size',opts:['1-50','51-200','201-1000','1000+']}};
+function setKind(){const r=wf.role.value,k=KIND[r];const ex=document.getElementById('wlExtra');ex.hidden=!k;
+ document.getElementById('wlPlat').closest('form').querySelector('label[for=wlPlat]').hidden=!!k;document.getElementById('wlPlat').hidden=!!k;
+ document.getElementById('wlTitle').innerHTML=k?k.t:'<em>Request</em> access';wf.querySelector('p.muted').textContent=k?k.sub:'Invites go out weekly. The web app comes first, then iOS and Android.';
+ wf.querySelector('button[type=submit]').textContent=k?k.btn:'Join the waitlist';
+ if(k){document.getElementById('wlSizeL').textContent=k.sl;document.getElementById('wlSize').innerHTML=k.opts.map(o=>`<option>${o}</option>`).join('')}}
+wf.role.addEventListener('change',setKind);
 let wixTok=null;
 async function wixToken(){if(wixTok)return wixTok;const r=await fetch('https://www.wixapis.com/oauth2/token',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({clientId:WIX.clientId,grantType:'anonymous'})});wixTok=(await r.json()).access_token;return wixTok}
 async function submitWix(d){
+  const u0=Object.entries(d.utm||{}).map(([k,v])=>k+'='+v).join('&').slice(0,200);
+  if(d.role==='investor'||d.role==='employer'){const s={email:d.email,source:d.source||'unknown'};if(d.name)s.first_name=d.name;if(d.org)s.company=d.org;if(d.size)s[d.role==='investor'?'check_size':'team_size']=d.size;if(d.message)s.message=d.message.slice(0,1000);if(u0)s.utm=u0;
+   const r=await fetch('https://www.wixapis.com/form-submission-service/v4/submissions',{method:'POST',headers:{'Content-Type':'application/json',Authorization:await wixToken()},body:JSON.stringify({submission:{formId:WIX.forms[d.role],submissions:s}})});if(!r.ok)throw new Error('wix '+r.status);return}
   const s={email:d.email,role:d.role,platform:d.platform,source:d.source||'unknown'};
   if(d.name)s.first_name=d.name;if(d.question)s.question=d.question.slice(0,500);if(d.ref)s.referred_by=d.ref;
   const u=Object.entries(d.utm||{}).map(([k,v])=>k+'='+v).join('&');if(u)s.utm=u.slice(0,200);
-  const r=await fetch('https://www.wixapis.com/form-submission-service/v4/submissions',{method:'POST',headers:{'Content-Type':'application/json',Authorization:await wixToken()},body:JSON.stringify({submission:{formId:WIX.formId,submissions:s}})});
+  const r=await fetch('https://www.wixapis.com/form-submission-service/v4/submissions',{method:'POST',headers:{'Content-Type':'application/json',Authorization:await wixToken()},body:JSON.stringify({submission:{formId:WIX.forms.waitlist,submissions:s}})});
   if(!r.ok)throw new Error('wix '+r.status);
 }
 async function refCode(e){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(e.trim().toLowerCase()));return [...new Uint8Array(b)].slice(0,4).map(x=>x.toString(16).padStart(2,'0')).join('')}
@@ -92,10 +103,10 @@ async function submitWL(data){
   const r=await fetch('/api/waitlist',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
   const j=await r.json().catch(()=>({}));if(!r.ok)throw new Error(j.error||'Something went wrong. Please try again.');return j}
 wf.addEventListener('submit',async e=>{e.preventDefault();we.textContent='';const b=wf.querySelector('button[type=submit]');b.disabled=true;b.textContent='Joining…';
-  try{const j=await submitWL({email:wf.email.value,name:wf.name.value,role:wf.role.value,platform:wf.platform.value,company:wf.company.value,source:ctx.source,question:ctx.question,ref:REF,utm:UTM,page:location.pathname});
+  try{const j=await submitWL({email:wf.email.value,name:wf.name.value,role:wf.role.value,platform:wf.platform.value,company:wf.company.value,source:ctx.source,question:ctx.question,org:wf.org.value,size:wf.size.value,message:wf.message.value,ref:REF,utm:UTM,page:location.pathname});
     document.getElementById('wlRef').value=location.origin+'/?ref='+j.code;wf.hidden=true;wd.hidden=false;
     window.va&&window.va('event',{name:'waitlist_join',data:{source:ctx.source,role:wf.role.value}});
-  }catch(err){we.textContent=err.message}finally{b.disabled=false;b.textContent='Join the waitlist'}});
+  }catch(err){we.textContent=err.message}finally{b.disabled=false;setKind()}});
 document.getElementById('wlCopy').onclick=e=>{navigator.clipboard?.writeText(document.getElementById('wlRef').value);e.target.textContent='Copied ✓'};
 
 // testimonial carousel

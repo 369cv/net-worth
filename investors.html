@@ -25,7 +25,7 @@
     </div>
     <div class="nav-cta">
       <a href="#" class="nlog">Log in</a>
-      <a href="#" class="ngo" data-waitlist="nav">Get started <span aria-hidden="true">→</span></a>
+      <a href="#" class="ngo" data-waitlist="nav">Request access <span aria-hidden="true">→</span></a>
       <button class="burger" id="burger" aria-label="Menu" aria-expanded="false"><svg class="ic"><use href="#i-menu"/></svg></button>
     </div>
   </div>
@@ -69,6 +69,11 @@
       <select id="wlRole" name="role"><option value="individual">An individual</option><option value="couple">A couple / household</option><option value="advisor">A financial advisor</option><option value="employer">An employer / HR team</option><option value="investor">An investor</option></select>
       <label for="wlPlat">Where you'd use it most</label>
       <select id="wlPlat" name="platform"><option value="web">Web</option><option value="ios">iPhone</option><option value="android">Android</option></select>
+      <div id="wlExtra" hidden>
+      <label for="wlCo">Company / firm</label><input id="wlCo" name="org" placeholder="Acme Capital">
+      <label for="wlSize" id="wlSizeL">Check size</label><select id="wlSize" name="size"></select>
+      <label for="wlMsg">Message (optional)</label><input id="wlMsg" name="message" placeholder="Anything we should know?">
+      </div>
       <input class="hp" name="company" tabindex="-1" autocomplete="off" aria-hidden="true">
       <button class="btn btn-light" type="submit">Join the waitlist</button>
       <p class="wl-err" id="wlErr" role="alert"></p>
