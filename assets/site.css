@@ -1099,3 +1099,32 @@ main{display:block}
 .chat2 .follow{display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,.06);border-radius:14px;padding:14px 16px;color:#999;font-size:14px}
 .chat2 .follow i{font-style:normal;width:26px;height:26px;border-radius:50%;background:#555;color:#fff;display:grid;place-items:center}
 @media (max-width:900px){.emp4{grid-template-columns:1fr}.scard{min-height:0;padding:30px}.scard p{margin-top:16px}}
+
+/* ===== RESOURCES / ABOUT ===== */
+.rcard{display:flex;flex-direction:column;justify-content:space-between;align-items:center;text-align:center;border-radius:32px;padding:56px 50px;min-height:520px;background:linear-gradient(150deg,#2a2a2c,#1c1c1e 70%);transition:transform .35s,box-shadow .35s}
+.rcard:hover{transform:translateY(-4px);box-shadow:0 30px 60px rgba(0,0,0,.4)}
+.rcard .mono{align-self:flex-start;font-size:12px;color:#a6a6ab}.rcard .date{font-size:13px;letter-spacing:.04em}
+.rcard h4{font-weight:400;font-size:clamp(20px,1.9vw,28px);line-height:1.5}
+.rcard.dashed{background:transparent;border:1px dashed rgba(255,255,255,.18)}
+#hr-res .rcard{min-height:340px;align-items:flex-start;text-align:left;border-radius:20px}#hr-res .rcard h4{font-size:21px;margin:40px 0 auto;padding-bottom:30px}
+.kr{margin-top:0}
+.feat{display:grid;grid-template-columns:1fr 1.05fr;gap:40px;align-items:center;border-radius:20px;padding:70px 120px;min-height:560px;position:relative;
+ background:radial-gradient(ellipse 55% 60% at 30% 45%,#0b6bad,transparent 70%),repeating-radial-gradient(ellipse at 30% 45%,rgba(255,255,255,.03) 0 10px,transparent 10px 22px),linear-gradient(135deg,#7ea6d6,#3d7fc0 40%,#7f9fd2 80%,#a9bde0);transition:transform .4s}
+.feat:hover{transform:translateY(-4px)}
+.feat-l{display:flex;flex-direction:column;justify-content:space-between;align-self:stretch}.feat-k{color:rgba(255,255,255,.75)}
+.feat-l h3{font-weight:400;font-size:clamp(22px,2.2vw,32px);line-height:1.45}.feat-l .date{font-size:16px;color:rgba(255,255,255,.75)}
+.shot{background:#fff;color:#111;border-radius:16px;border:16px solid #111;border-width:16px 0;padding:30px;box-shadow:0 30px 60px rgba(0,0,0,.3)}
+.shot h5{font-size:22px;font-weight:400;text-align:center;margin-bottom:18px}
+.evals{display:flex;gap:14px;align-items:flex-end;height:200px;background:#f4f4f5;border-radius:14px;padding:18px}
+.evals div{flex:1;display:flex;flex-direction:column-reverse;align-items:center;height:100%;gap:8px;font-size:10.5px;text-align:center;color:#555}
+.evals i{width:70%;height:var(--h);background:var(--c);border-radius:3px 3px 0 0;transform:scaleY(0);transform-origin:bottom;transition:transform 1s cubic-bezier(.2,.7,.2,1)}
+.in .evals i,.feat.in .evals i{transform:none}
+.evals div:nth-child(2) i{transition-delay:.1s}.evals div:nth-child(3) i{transition-delay:.2s}.evals div:nth-child(4) i{transition-delay:.3s}.evals div:nth-child(5) i{transition-delay:.4s}
+.about-hero{position:relative;min-height:92vh;display:grid;place-items:center;text-align:center;overflow:hidden;background:linear-gradient(180deg,#121316,#18191c)}
+.about-hero h1{font-size:clamp(56px,9vw,124px);line-height:1}.about-hero .wrap>p{color:#bdbdc2;font-size:19px;margin-top:22px}
+.ghost{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-around;color:rgba(255,255,255,.035);font-size:30px;white-space:nowrap;pointer-events:none}
+.ghost p{animation:mq 80s linear infinite}.ghost p:nth-child(2){animation-direction:reverse;animation-duration:100s}
+.team .tm{border-radius:20px;padding:30px;background:#1b1c1f}.tm .ph{width:100%;aspect-ratio:1.2;border-radius:14px;background:linear-gradient(135deg,#2a2b30,#1e1f23);display:grid;place-items:center;font-family:"Instrument Serif";font-size:56px;color:#55565c;margin-bottom:20px}
+.tm h4{font-size:20px;font-weight:500}.tm .mono{font-size:11px;color:#9a9aa0;display:block;margin:6px 0 12px}
+@media (max-width:900px){.feat{grid-template-columns:1fr;padding:40px 24px}.rcard{min-height:340px;padding:36px 28px}.ghost{font-size:20px}}
+@media (max-width:900px){.shot{padding:16px}.evals{gap:6px;padding:10px;height:170px}.evals div{font-size:8.5px;min-width:0}.feat{overflow:hidden}}
