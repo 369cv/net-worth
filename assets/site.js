@@ -73,7 +73,22 @@ document.addEventListener('click',e=>{const t=e.target.closest('[data-waitlist]'
 addEventListener('keydown',e=>{if(e.key==='Escape')closeWL()});
 document.getElementById('heroAsk')?.addEventListener('submit',e=>{e.preventDefault();openWL('hero-ask',null,'',e.target.querySelector('input').value)});
 document.querySelectorAll('.inline-wl').forEach(f=>f.addEventListener('submit',e=>{e.preventDefault();openWL(f.dataset.source,null,f.email.value)}));
+// Wix Forms backend (Waitlist form). Falls back to /api/waitlist (Vercel) if Wix is unreachable.
+const WIX={clientId:'93d68ff8-1a94-4b42-a760-c0ea27b7bac5',formId:'1d9929b8-d1e7-48e4-9672-7997bfec89ca'};
+let wixTok=null;
+async function wixToken(){if(wixTok)return wixTok;const r=await fetch('https://www.wixapis.com/oauth2/token',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({clientId:WIX.clientId,grantType:'anonymous'})});wixTok=(await r.json()).access_token;return wixTok}
+async function submitWix(d){
+  const s={email:d.email,role:d.role,platform:d.platform,source:d.source||'unknown'};
+  if(d.name)s.first_name=d.name;if(d.question)s.question=d.question.slice(0,500);if(d.ref)s.referred_by=d.ref;
+  const u=Object.entries(d.utm||{}).map(([k,v])=>k+'='+v).join('&');if(u)s.utm=u.slice(0,200);
+  const r=await fetch('https://www.wixapis.com/form-submission-service/v4/submissions',{method:'POST',headers:{'Content-Type':'application/json',Authorization:await wixToken()},body:JSON.stringify({submission:{formId:WIX.formId,submissions:s}})});
+  if(!r.ok)throw new Error('wix '+r.status);
+}
+async function refCode(e){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(e.trim().toLowerCase()));return [...new Uint8Array(b)].slice(0,4).map(x=>x.toString(16).padStart(2,'0')).join('')}
 async function submitWL(data){
+  if(data.company)return {code:'x'};
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(data.email))throw new Error('Please enter a valid email.');
+  try{await submitWix(data);return {code:await refCode(data.email)}}catch(e){console.warn('Wix submit failed, trying /api',e)}
   const r=await fetch('/api/waitlist',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
   const j=await r.json().catch(()=>({}));if(!r.ok)throw new Error(j.error||'Something went wrong. Please try again.');return j}
 wf.addEventListener('submit',async e=>{e.preventDefault();we.textContent='';const b=wf.querySelector('button[type=submit]');b.disabled=true;b.textContent='Joining…';

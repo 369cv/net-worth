@@ -41,3 +41,9 @@ select referred_by, count(*) from waitlist where referred_by is not null group b
 Static site with no build step. Vercel serves `index.html` and turns `api/` into functions automatically.
 
 Roles: individual | couple | advisor | employer | investor. Employer leads: `select * from waitlist where role='employer';`
+
+## Wix backend (live)
+- Site: https://headless-xbbbedatckk-baha50-1406.wix-site-host.com (metaSiteId d7297d6c-0f9e-42b4-af66-478f660798c5)
+- Every waitlist / request-access button posts to the Wix Forms form **Waitlist** (formId 1d9929b8-d1e7-48e4-9672-7997bfec89ca) with the visitor's anonymous token (OAuth client 93d68ff8-1a94-4b42-a760-c0ea27b7bac5).
+- Fields: email, first_name, role, platform, source, question, referred_by, utm. Submissions appear in Wix Dashboard → Forms & Submissions, and emails become Wix Contacts.
+- If Wix is unreachable, the page falls back to `/api/waitlist` (Vercel).
