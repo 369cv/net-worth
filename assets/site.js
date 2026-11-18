@@ -10,7 +10,7 @@ const io=new IntersectionObserver(es=>es.forEach(e=>{
   e.target.classList.add('in');
   e.target.querySelectorAll('[data-count]').forEach(count);
   io.unobserve(e.target);
-}),{threshold:.15});
+}),{threshold:0,rootMargin:'0px 0px 15% 0px'});
 document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 function count(el){
   const end=+el.dataset.count,dec=+(el.dataset.dec||0),pre=el.dataset.pre||'',suf=el.dataset.suf||'';
@@ -51,7 +51,7 @@ if(ht){[...ht.childNodes].forEach(n=>{
 ht.setAttribute('aria-label',ht.textContent.trim())}
 // hero v2: scroll-out (content lifts + fades, sky drifts slower) and mouse parallax on glow
 const hero=document.querySelector('.hero');
-if(hero&&hero.querySelector('.glow')){const hw=hero.querySelector('.wrap'),glow=hero.querySelector('.glow');
+if(hero&&hero.querySelector('.glow')&&matchMedia('(min-width:901px)').matches){const hw=hero.querySelector('.wrap'),glow=hero.querySelector('.glow');
 addEventListener('scroll',()=>{const y=scrollY;if(y>innerHeight)return;
   hero.style.backgroundPositionY=`calc(50% + ${y*.35}px)`;
   hw.style.transform=`translateY(${y*.25}px) scale(${1-y/innerHeight*.06})`;hw.style.opacity=1-y/(innerHeight*.75)},{passive:true});
@@ -66,8 +66,8 @@ const wl=document.getElementById('wl'),wf=document.getElementById('wlForm'),wd=d
 const qp=new URLSearchParams(location.search);const REF=qp.get('ref')||'';const UTM=Object.fromEntries([...qp].filter(([k])=>k.startsWith('utm_')));
 let ctx={source:'unknown',question:''};
 function openWL(source,role,email,question){ctx={source,question:question||''};wf.hidden=false;wd.hidden=true;we.textContent='';
-  wf.role.value=role||'individual';if(email)wf.email.value=email;setKind();wl.classList.add('open');setTimeout(()=>wf.email.focus(),200)}
-function closeWL(){wl.classList.remove('open')}
+  wf.role.value=role||'individual';if(email)wf.email.value=email;setKind();wl.classList.add('open');document.body.classList.add('wl-open');setTimeout(()=>wf.email.focus(),200)}
+function closeWL(){wl.classList.remove('open');document.body.classList.remove('wl-open')}
 document.addEventListener('click',e=>{const t=e.target.closest('[data-waitlist]');if(t){e.preventDefault();openWL(t.dataset.waitlist,t.dataset.role);if(t.dataset.platform)wf.platform.value=t.dataset.platform}
   if(e.target===wl||e.target.closest('[data-close]'))closeWL()});
 addEventListener('keydown',e=>{if(e.key==='Escape')closeWL()});
@@ -140,10 +140,16 @@ dd.querySelectorAll('.ddm a').forEach(a=>{if(a.getAttribute('href')===(location.
 })();
 
 // simplify: scroll-driven rotate-up of the phone (0 = isometric, 1 = upright), rAF-throttled, only while visible
-(()=>{const fan=document.getElementById('fan');if(!fan||matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+(()=>{const fan=document.getElementById('fan');if(!fan||matchMedia('(prefers-reduced-motion: reduce), (max-width:900px)').matches){fan&&fan.classList.add('in');return}
 const stage=fan.closest('.stage'),ph=fan.querySelector('.ph-c'),bars=[...fan.querySelectorAll('.prog i')];let vis=false,tick=false;
 const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
 const upd=()=>{tick=false;const r=stage.getBoundingClientRect();const total=r.height-innerHeight*.9;const raw=Math.min(1,Math.max(0,(-r.top+innerHeight*.15)/Math.max(1,total)));
  const p=ease(raw);ph.style.setProperty('--p',p.toFixed(4));bars.forEach((b,i)=>b.style.setProperty('--f',Math.min(1,Math.max(0,raw*3-i)).toFixed(3)))};
 new IntersectionObserver(([e])=>{vis=e.isIntersecting;if(vis){fan.classList.add('in');upd()}},{rootMargin:'0px 0px -10% 0px'}).observe(stage);
 addEventListener('scroll',()=>{if(vis&&!tick){tick=true;requestAnimationFrame(upd)}},{passive:true});addEventListener('resize',upd);})();
+
+// mobile sticky CTA: show after the hero, hide near the footer/download form
+(()=>{const b=document.querySelector('.mcta');if(!b)return;const hero=document.querySelector('.hero,.page-hero,.emp-hero,.about-hero,.prose');const end=document.querySelector('#download,footer');let past=false,atEnd=false;
+const set=()=>b.classList.toggle('show',past&&!atEnd);
+if(hero)new IntersectionObserver(([e])=>{past=!e.isIntersecting;set()},{rootMargin:'-60% 0px 0px 0px'}).observe(hero);else{past=true;set()}
+if(end)new IntersectionObserver(([e])=>{atEnd=e.isIntersecting;set()}).observe(end);})();
