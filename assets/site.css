@@ -1241,3 +1241,9 @@ section.tight{padding-top:clamp(40px,5vw,72px)}
 main>section,body>section{content-visibility:auto;contain-intrinsic-size:auto 900px}
 .reveal{will-change:auto}
 @media (prefers-reduced-motion:reduce){.logo:hover .mark{transform:none}}
+/* eclipse sized to page rhythm */
+.tg{padding:clamp(60px,8vw,110px) 0}
+.eclipse2{width:min(680px,78vw)}
+.eclipse2:before{inset:-12%}
+.ec-in{max-width:400px}
+@media (max-width:900px){.eclipse2{width:min(520px,82vw)}.eclipse2:before{inset:-9%}.ec-in p{font-size:15px;margin:12px 0 22px}.avpill i{width:48px;height:48px}}
