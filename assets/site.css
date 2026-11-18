@@ -1396,3 +1396,19 @@ section:has(.fan){padding-bottom:0}
 @keyframes shim{to{background-position:-200% 0}}@keyframes bob{50%{transform:translateY(-4px);opacity:.4}}
 .chat.sent:not(.answered) .thinking{height:40px;opacity:1;padding-top:14px}
 @media (prefers-reduced-motion:reduce){.chat.seq .answer,.chat.seq>.ui,.chat.seq .answer li{opacity:1;transform:none;max-height:none}.thinking{display:none}}
+
+/* home screen v2 (layout patterns from Mobbin finance-app references) */
+.ph-home{padding:10px 14px 4px}.ph-home .hl{display:flex;align-items:center;gap:8px}.ph-home .hr{display:flex;gap:6px;align-items:center}
+.cb{width:28px;height:28px;border-radius:50%;background:#16171a;display:grid;place-items:center}.cb .ic{width:13px;height:13px}.cb.sm{width:24px;height:24px;border-radius:7px;border:1px solid #2a2b30;background:none;color:#8d7cff}
+.hometabs{display:flex;gap:4px;padding:6px 14px 8px}.hometabs span{padding:6px 12px;border-radius:8px;font-size:11px;color:#9a9aa0}.hometabs .on{background:#16171a;color:#fff}
+.nwcard{padding:10px 12px}.nwh{display:flex;justify-content:space-between;align-items:center}
+.nwrow{display:flex;align-items:baseline;gap:6px;margin-top:6px}.nwrow b{font-size:21px;font-weight:400}.nwrow small{font-size:10px}.nwrow .fcb{margin-left:auto;font-size:10px;padding:4px 8px}
+.tchips{display:flex;justify-content:space-between;font-size:9px;color:#8a8a90;margin:4px 0 8px;font-family:"JetBrains Mono",monospace}.tchips .on{color:#fff;background:#1d1e22;border-radius:6px;padding:2px 7px}
+.addacct{border:1px solid #2a2b30;border-radius:10px;text-align:center;padding:8px;font-size:11px;color:#cfcfd3}
+.days{display:flex;gap:4px;margin-top:10px}.days span{flex:1;text-align:center;font-size:9px;padding:8px 0;border-radius:6px;background:#16171a;color:#8a8a90}
+.days .b1{background:#1b3354;color:#cfe}.days .b2{background:#22477a;color:#fff}.days .b3{background:#7fc2ff;color:#062033}
+.tabbar2{display:flex;align-items:center;gap:6px;padding:8px 10px 16px}
+.tabbar2 span{width:30px;height:30px;display:grid;place-items:center;color:#8a8a90}.tabbar2 .ic{width:15px;height:15px}
+.tabbar2 .on{width:auto;padding:0 10px;display:flex;gap:6px;border-radius:999px;background:#1a1b1f;color:#fff;font:9px "JetBrains Mono",monospace;letter-spacing:.08em;text-transform:uppercase}
+.tabbar2 .fab{margin-left:auto;width:36px;height:36px;border-radius:12px;background:#1d1a3a;color:#8d7cff;box-shadow:inset 0 0 0 1px rgba(141,124,255,.35)}
+.ph-c .ph3-body{padding:2px 12px}
