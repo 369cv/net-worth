@@ -5,7 +5,7 @@
 //   3. Fallback  -> logged to Vercel runtime logs only
 const crypto = require('crypto');
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-const ROLES = ['individual', 'couple', 'advisor', 'investor'];
+const ROLES = ['individual', 'couple', 'advisor', 'employer', 'investor'];
 const PLATFORMS = ['web', 'ios', 'android'];
 const clip = (v, n) => (typeof v === 'string' ? v.trim().slice(0, n) : '');
 

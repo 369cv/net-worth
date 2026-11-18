@@ -85,3 +85,7 @@ document.querySelectorAll('.dots button').forEach(b=>b.onclick=()=>{const c=b.cl
 document.querySelectorAll('.faq2').forEach(l=>l.addEventListener('toggle',e=>{if(e.target.open)l.querySelectorAll('details[open]').forEach(d=>d!==e.target&&(d.open=false))},true));
 // mark current nav link
 document.querySelectorAll('#links a').forEach(a=>{if(a.getAttribute('href')===(location.pathname.split('/').pop()||'index.html').replace(/^([^.]+)$/,'$1.html'))a.classList.add('cur')});
+
+// employers: typed AI reply when visible
+(()=>{const el=document.getElementById('empReply');if(!el)return;const t="Likely yes. At your current savings rate you'd reach about 92% of your target by 60. Raising contributions by 3% closes the gap without changing your spending.";
+new IntersectionObserver((e,o)=>{if(!e[0].isIntersecting)return;o.disconnect();let i=0;(function f(){el.textContent=t.slice(0,i+=2);if(i<t.length)setTimeout(f,22)})()},{threshold:.4}).observe(el)})();

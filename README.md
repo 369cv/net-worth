@@ -39,3 +39,5 @@ select referred_by, count(*) from waitlist where referred_by is not null group b
 
 ## Deploy
 Static site with no build step. Vercel serves `index.html` and turns `api/` into functions automatically.
+
+Roles: individual | couple | advisor | employer | investor. Employer leads: `select * from waitlist where role='employer';`
