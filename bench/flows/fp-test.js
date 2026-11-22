@@ -1,0 +1,12 @@
+const {chromium}=require('playwright');(async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:1366,height:900}});const errs=[];p.on('pageerror',e=>errs.push(e.message));
+await p.goto('file://'+__dirname+'/bench/www/index.html');await p.evaluate(`S.user={name:'Sam Lee',email:'s@x.com',onboarded:true};S.ob.step='done';S.plan=null;S.view='planner';render()`);await p.waitForTimeout(500);
+const c=async s=>{await p.click(s);await p.waitForTimeout(350)};
+await c('[data-fpmatch]');await c('.fpchip:has-text("Retirement")');await c('[data-fpgo]');
+await c('[data-fpbook]');await c('[data-fpt] .fpchip >> nth=1');await c('[data-fpok]');
+await p.screenshot({path:'fp.png'});
+await c('[data-fpnadd]');await p.fill('#fpn','Roth vs 401k?');await c('[data-fpsave]');
+await c('[data-fpnedit="0"]');await p.fill('#fpn','Roth or 401k?');await c('[data-fpsave]');
+await p.reload();await p.waitForTimeout(600);await p.evaluate(`S.view='planner';render()`);await p.waitForTimeout(300);
+const st=await p.evaluate(()=>JSON.stringify(S.plan));
+await c('[data-fpndel="0"]');await c('.ov.mini .mmact .btn:not(.ghost2)');await c('[data-fpcancel]');await c('.ov.mini .mmact .btn:not(.ghost2)');
+console.log(st, await p.evaluate(()=>JSON.stringify(S.plan)));await p.screenshot({path:'fp2.png'});console.log(JSON.stringify(errs));await b.close()})();
