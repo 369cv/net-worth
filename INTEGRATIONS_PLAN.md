@@ -112,3 +112,32 @@ What high-level and institutional investors need on top:
 7. **Institutional module.**
 
 Each step passes the benchmark twice before it moves on, as in `HEALING_LOOP.md`.
+
+---
+
+## 10. Free / open-source stack (rule: no paid vendors)
+
+Decision 2026-11-22: use only open-source or free-tier components. This replaces the paid parts of §2, §3 and §6.
+
+| Need | Free choice | Licence / cost | Notes |
+|------|-------------|----------------|-------|
+| US bank sync | [Teller](https://teller.io) developer tier | Free, about 100 live connections (check the current terms) | REST API; a server holds the certificate |
+| US bank sync (backup) | Plaid Sandbox + limited Production | Free to build; Production is paid per item | Use only for development if staying strictly free |
+| EU/UK bank sync | Enable Banking (restricted free tier) | Free for limited use | GoCardless/Nordigen is closed to new signups since July 2025 |
+| UAE (Mashreq NEO BIZ) and anything else | Statement import: CSV, OFX, MT940, PDF | Free | The only free route; UAE Open Finance requires a licensed partner |
+| Import engine reference | [Firefly III Data Importer](https://github.com/firefly-iii/data-importer) + [bank import configurations](https://github.com/firefly-iii/import-configurations) | AGPL-3.0 | Reuse its CSV mapping approach and per-bank configs |
+| Automation | Self-hosted n8n (Community Edition) | Free when self-hosted ("Sustainable Use" licence) | Scheduled sync, CSV → categorize → API, alerts |
+| n8n starting templates | [Multi-bank sync to Maybe Finance](https://n8n.io/workflows/6284-automate-multi-bank-transaction-sync-and-reporting-with-gocardless-and-maybe-finance/), [CSV statement categorizer](https://n8n.io/workflows/21921), [Firefly III + Telegram](https://n8n.io/workflows/11339-record-transactions-and-generate-budget-reports-with-gemini-ai-telegram-and-firefly-iii/), [awesome-n8n-templates](https://github.com/enescingoz/awesome-n8n-templates) | Free | Adapt: swap their destination for the Net Worth API |
+| Real estate reference | [TAP·re](https://awesome.ecosyste.ms/projects/github.com%2Fparadoxicalflummox%2Ftapre) (investor returns, LTV), [MicroRealEstate](https://github.com/microrealestate/microrealestate) (leases, tenants, rent) | AGPL / open source | Borrow data models; build inside Net Worth |
+| Wealth / holdings reference | Ghostfolio (open-source wealth tracker) | AGPL-3.0 | Holdings, performance, FX handling |
+| Database, auth | Postgres + open-source auth (e.g. Auth.js / Lucia) | Free | Self-host or a free tier |
+| FX rates | ECB reference rates / Frankfurter API | Free | Daily rates for AED, USD and others |
+
+AGPL note: copying AGPL code into Net Worth would make the whole app AGPL. Use AGPL projects as references or as separate services; don't paste their code in.
+
+Free-stack rollout:
+1. Statement import (works for Mashreq NEO BIZ today).
+2. Self-hosted n8n with an import → categorize → Net Worth API workflow.
+3. Teller for US banks.
+4. Real estate module modelled on TAP·re and MicroRealEstate.
+5. Enable Banking for EU/UK if needed.
