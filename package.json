@@ -1,1 +1,2 @@
-{ "name": "networth-landing", "private": true, "version": "0.1.0", "engines": { "node": ">=20" } }
+{ "name": "networth-landing", "private": true, "version": "0.1.0", "engines": { "node": ">=20" },
+  "dependencies": { "@neondatabase/serverless": "^0.10.4" } }

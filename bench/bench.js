@@ -5,7 +5,7 @@ const SRC='/home/user/networth/design/webapp-preview.html';const APP=__dirname+'
 const AXE=fs.readFileSync(require.resolve('axe-core/axe.min.js'),'utf8');
 const SEED=`const W=BUBS.findIndex(x=>x[0]==='Wise');S.accounts=[{id:'u',kind:'bank',name:'SGD account',mask:'4403',balance:1047.4,bank:W,inst:'Wise (US)',show:true},{id:'cb',kind:'brokerage',name:'Coinbase',balance:2.28,bank:BUBS.findIndex(x=>x[0]==='Coinbase'),show:true,added:Date.now()-36e4}];S.tx=null;S.user={name:'Sam Lee',email:'sam@example.com',onboarded:true};S.ob.step='done';ensureTx();save();`;
 const SCREENS=[['home',{}],['home',{homeTab:'Net worth'}],['spending',{tab:'Overview'}],['spending',{tab:'Breakdown & budget'}],['spending',{tab:'Transactions'}],['spending',{tab:'Recurring'}],['spending',{tab:'Reports'}],['invest',{invTab:'Overview'}],['invest',{invTab:'Holdings'}],['invest',{invTab:'Market watch'}],['forecast',{}],['equity',{}],['brokerage',{}],['estate',{}],['tax',{}],['planner',{}],['settings',{stTab:'profile'}],['settings',{stTab:'security'}],['settings',{stTab:'accounts'}]];
-const FLOW_TESTS=['tx-test.js','rec-test.js','inv-test.js','mw-test.js','fc-test.js','eq-test.js','br-test.js','will-test.js','tax-test.js','st-test.js','sp-test.js','au-test.js','tour-test.js','fp-test.js','smoke-test.js'];
+const FLOW_TESTS=['tx-test.js','rec-test.js','inv-test.js','mw-test.js','fc-test.js','eq-test.js','br-test.js','will-test.js','tax-test.js','st-test.js','sp-test.js','au-test.js','tour-test.js','fp-test.js','stmt-test.js','smoke-test.js'];
 const out={when:new Date().toISOString(),flows:{},axe:{},lighthouse:{},persistence:{},console:{}};
 (async()=>{
  /* 1. functional flow suites */
