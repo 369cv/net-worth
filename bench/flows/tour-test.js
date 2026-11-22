@@ -1,0 +1,12 @@
+const {chromium}=require('playwright');(async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:1366,height:860}});
+const errs=[];p.on('pageerror',e=>errs.push(e.message));const w=t=>p.waitForTimeout(t);let n=0;const D='/tmp/claude-0/-home-user-net-worth/0d8ea8f5-255b-568d-8402-df56007d0fec/scratchpad/';const shot=async()=>{await p.screenshot({path:`${D}tt${++n}.png`})};
+const step=async(name,fn)=>{try{await fn()}catch(e){errs.push(name+': '+e.message.split('\n')[0])}};
+await p.goto('file:///home/user/networth/design/webapp-preview.html');
+await p.evaluate(()=>{const W=BUBS.findIndex(x=>x[0]==='Wise');S.accounts=[{id:'u',kind:'bank',name:'SGD account',mask:'4403',balance:1047.4,bank:W,inst:'Wise (US)',show:true}];S.tx=null;S.user={name:'Sam Lee',onboarded:true};S.ob.step='done';S.tourDone=0;ensureTx();save();S.view='home';render()});await w(800);
+await step('help',async()=>{await p.click('.top [aria-label="Help"]');await w(600);await shot();await p.click('[data-pk="tour"]');await w(700);await shot()});
+await step('walk',async()=>{for(let k=0;k<12;k++){await p.click('[data-tnext]');await w(650);if([1,2,4,6,8,9,10,11].includes(k))await shot()}});
+await step('done',async()=>{await p.click('[data-tnext]');await w(500);const left=await p.$('.tour');if(left)throw new Error('tour still open');console.log('tourDone',await p.evaluate(()=>S.tourDone))});
+await step('keys',async()=>{await p.evaluate(()=>tour());await w(500);await p.keyboard.press('ArrowRight');await w(500);await p.keyboard.press('ArrowRight');await w(500);await p.keyboard.press('Escape');await w(400);if(await p.$('.tour'))throw new Error('esc failed')});
+await step('auto',async()=>{await p.evaluate(()=>{S.tourDone=0;S.user=null;S.ob={step:'source',email:'a@b.co',name:'Sam'};render()});await w(300);await p.evaluate(()=>{S.user={name:'Sam',onboarded:true};S.offerTour=1;S.ob.step='done';S.view='home';render()});await w(1800);if(!await p.$('.tour'))throw new Error('auto tour not shown');await shot()});
+await step('mobile',async()=>{await p.setViewportSize({width:390,height:800});await p.evaluate(()=>tour(2));await w(800);await shot()});
+console.log(JSON.stringify(errs),n);await b.close()})();

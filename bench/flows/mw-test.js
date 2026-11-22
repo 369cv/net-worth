@@ -1,0 +1,15 @@
+const {chromium}=require('playwright');(async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:1366,height:900}});
+const errs=[];p.on('pageerror',e=>errs.push(e.message));const w=t=>p.waitForTimeout(t);let n=0;const D='/tmp/claude-0/-home-user-net-worth/0d8ea8f5-255b-568d-8402-df56007d0fec/scratchpad/';const shot=async()=>{await p.screenshot({path:`${D}m${++n}.png`})};
+const step=async(name,fn)=>{try{await fn()}catch(e){errs.push(name+': '+e.message.split('\n')[0])}};
+await p.goto('file:///home/user/networth/design/webapp-preview.html');
+await p.evaluate(()=>{S.accounts=[{id:'cb',kind:'brokerage',name:'Coinbase',balance:2.12,bank:BUBS.findIndex(x=>x[0]==='Coinbase'),show:true,added:Date.now()-36e4}];S.tx=null;S.user={name:'Sam Lee',onboarded:true};S.ob.step='done';S.view='invest';S.invTab='Holdings';save();render()});await w(900);
+await step('menu',async()=>{await p.click('[data-hmore]');await w(300);await shot();await p.click('[data-hm2="add"]');await w(400);await shot()});//1,2
+await step('pick',async()=>{await p.click('[data-ahpick="NVDA"]');await w(300);await p.fill('#ahs','1');await w(200);await shot();await p.click('[data-ahnext]');await w(300);await shot()});//3,4
+await step('more',async()=>{await p.click('[data-ahmore]');await w(300);await p.fill('#ahq','app');await w(300);await p.click('[data-ahpick="AAPL"]');await w(200);await p.fill('#ahs','0.5');await p.click('[data-ahnext]');await w(300);await p.click('[data-ahsave]');await w(500);await shot()});//5 error
+await step('acct',async()=>{await p.click('[data-ahacct]');await w(400);await p.fill('#ian','Sam Lee Account');await shot();await p.click('#iaf .btn.pri');await w(600);await shot();await p.click('[data-ahsave]');await w(900);await shot()});//6,7,8
+await step('detail',async()=>{await p.click('tr[data-hold] td');await w(800);await shot();await p.mouse.wheel(0,900);await w(500);await shot();await p.mouse.wheel(0,1200);await w(500);await shot();await p.mouse.wheel(0,-3000);await p.click('[data-citab="About"]');await w(300);await p.click('.hdg [data-star]');await w(400);await shot()});//9-12
+await step('mw',async()=>{await p.click('[data-itab="Market watch"]');await w(800);await shot();await p.fill('#mwq','ms');await w(400);await shot();await p.fill('#mwq','');await w(200);await p.click('[data-star="AAPL"]');await w(300);await shot()});//13-15
+await step('earn',async()=>{await p.locator('[data-earn]').first().click();await w(500);await shot();await p.evaluate(()=>document.querySelectorAll('.ov').forEach(o=>o.remove()));await p.click('[data-wlall]');await w(600);await shot()});//16,17
+await step('edit',async()=>{await p.evaluate(()=>{document.querySelectorAll('.drw').forEach(d=>d.remove());S.hdet=null;S.invTab='Holdings';render()});await w(500);await p.click('[data-hmore]');await w(200);await p.click('[data-hm2="edit"]');await w(600);await shot()});//18
+console.log(await p.evaluate(()=>JSON.stringify(S.accounts.map(a=>[a.name,a.balance]))));
+console.log(JSON.stringify(errs));await b.close()})();
